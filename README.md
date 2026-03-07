@@ -36,7 +36,7 @@ Audiovisual is the extension. Sound is the origin.
 | *Rove and Clear EP* | EP — Step In Recordings | 2014 |
 | *Hy Brazil Vol. 4* | compilation | 2014 |
 
-→ [Spotify](#) · [Bandcamp](https://problemasdosoutros.bandcamp.com/album/vertigem) · [SoundCloud](#)
+→ [Spotify](https://open.spotify.com/intl-pt/artist/2iAvxak56T6JZKjhP7k0ea) · [Bandcamp](https://marcvs.bandcamp.com/) · [SoundCloud](https://soundcloud.com/marcvscouto)
 
 ---
 
