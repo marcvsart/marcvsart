@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>marcvs · records of the fall</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Space+Mono&display=swap');
+
+  :root {
+    --bg: #f5f5f0;
+    --ink: #6b0000;
+    --ink-dim: #8b1a1a;
+    --ink-faint: #b05050;
+    --ink-ghost: #c8898940;
+    --accent: #6b0000;
+    --border: #c8898955;
+    --year: #b05050;
+    --label: #8b1a1a;
+    --footer: #c88989;
+    --glitch: #8b0000;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Space Mono", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 60px auto;
+    padding: 0 20px;
+    cursor: crosshair;
+  }
+
+  /* Subtle noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    margin: 0 0 2px 0;
+    color: var(--ink);
+    animation: flicker 8s infinite;
+  }
+
+  @keyframes flicker {
+    0%, 97%, 100% { opacity: 1; }
+    97.5% { opacity: 0.4; }
+    98% { opacity: 1; }
+    98.5% { opacity: 0.2; }
+    99% { opacity: 1; }
+  }
+
+  .subtitle {
+    color: var(--ink-faint);
+    margin: 0 0 8px 0;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .log-stamp {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin: 0 0 40px 0;
+    opacity: 0.7;
+  }
+
+  .log-stamp::before {
+    content: '> ';
+  }
+
+  h2 {
+    font-family: "Space Mono", monospace;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin: 36px 0 8px 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+
+  h2::before {
+    content: '//';
+    margin-right: 6px;
+    opacity: 0.5;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 3px 0;
+    position: relative;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--ink-ghost);
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+
+  a:visited {
+    color: var(--ink-dim);
+  }
+
+  a:hover {
+    color: #3d0000;
+    text-decoration-color: var(--ink);
+  }
+
+  .year {
+    color: var(--year);
+    font-size: 11px;
+    margin-left: 8px;
+  }
+
+  .label {
+    color: var(--label);
+    font-size: 11px;
+    margin-left: 4px;
+    opacity: 0.75;
+  }
+
+  .chain-id {
+    font-size: 10px;
+    color: var(--ink-faint);
+    display: block;
+    margin-left: 0;
+    margin-top: 1px;
+    opacity: 0.6;
+    font-family: "Space Mono", monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .nft-item {
+    padding: 5px 0 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nft-item:last-child {
+    border-bottom: none;
+  }
+
+  .platform-tag {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-left: 6px;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+
+  .note {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin: 20px 0 0 0;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .note::before {
+    content: '"';
+    font-size: 20px;
+    line-height: 0;
+    vertical-align: -4px;
+    margin-right: 3px;
+    opacity: 0.5;
+  }
+
+  .status-line {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    opacity: 0.6;
+  }
+
+  .status-line::before {
+    content: 'STATUS: ';
+    letter-spacing: 0.1em;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0 0 0;
+  }
+
+  footer {
+    font-size: 10px;
+    color: var(--footer);
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .back-link {
+    display: block;
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-decoration: none;
+    margin-top: 6px;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .back-link:hover {
+    opacity: 1;
+    color: var(--ink);
+  }
+
+  .back-link::before {
+    content: '← ';
+  }
+</style>
+</head>
+<body>
+
+<h1>marcvs</h1>
+<p class="subtitle">records of the fall · image · chain · archive</p>
+<p class="log-stamp">session_id: 23°32'S_46°38'W · unauthorized access</p>
+
+<h2>on-chain</h2>
+
+<ul>
+  <li class="nft-item">
+    <a href="https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa" target="_blank">objkt.com</a>
+    <span class="platform-tag">tezos</span>
+    <span class="chain-id">tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa</span>
+  </li>
+  <li class="nft-item">
+    <a href="https://foundation.app/@marcvsart" target="_blank">Foundation</a>
+    <span class="platform-tag">ethereum</span>
+    <span class="chain-id">@marcvsart</span>
+  </li>
+  <li class="nft-item">
+    <a href="https://opensea.io/Marcvsart" target="_blank">OpenSea</a>
+    <span class="platform-tag">ethereum / polygon</span>
+    <span class="chain-id">Marcvsart</span>
+  </li>
+  <li class="nft-item">
+    <a href="https://gamma.io/ordinals/collections/fragments-of-acrylic/items" target="_blank">Fragments of Acrylic</a>
+    <span class="platform-tag">bitcoin ordinals — gamma.io</span>
+    <span class="chain-id">fragments-of-acrylic · permanent inscription</span>
+  </li>
+</ul>
+
+<p class="note">image as evidence. chain as memory. everything that was minted remains.</p>
+
+<p class="status-line">ACTIVE · DISTRIBUTED · IMMUTABLE</p>
+
+<hr>
+<footer>23°32'S 46°38'W · marcvs · 2026</footer>
+<a class="back-link" href="index.htm">index.htm</a>
+
+</body>
+</html>
