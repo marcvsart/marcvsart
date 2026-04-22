@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marcvs · som</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+  .sub-shell { max-width: 1180px; padding: 44px 80px 60px; }
+  @media (max-width: 720px) { .sub-shell { padding: 28px 28px 48px; } }
+
+  .mark { font-family: var(--serif); font-style: italic; font-size: 22px; letter-spacing: -0.01em; }
+  .mark a { border-bottom: none; }
+
+  .chapter-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin: 80px 0 64px;
+  }
+  .chapter-head .title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(96px, 14vw, 192px);
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+    /* a pequena variação de ritmo: som desloca levemente à direita */
+    transform: translateX(20px);
+  }
+  .chapter-head .meta-col {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 14px;
+    line-height: 1.7;
+  }
+  .chapter-head .meta-col .desc {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--fg);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    max-width: 420px;
+  }
+  .chapter-head .meta-col .row { display: flex; justify-content: space-between; border-top: 1px solid var(--rule-soft); padding: 8px 0; }
+  .chapter-head .meta-col .row span:last-child { color: var(--fg); }
+
+  /* section label (projeto: marcvs, osasco dynamics, etc.) */
+  .group { margin-bottom: 40px; }
+  .group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 22px 0 12px;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 6px;
+  }
+  .group-head h2 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 34px;
+    letter-spacing: -0.01em;
+  }
+  .group-head .count {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* track list */
+  .track {
+    display: grid;
+    grid-template-columns: 56px 1fr 1fr 100px 70px;
+    gap: 24px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left .25s ease, background-color .25s ease;
+  }
+  .track:hover { padding-left: 10px; background: rgba(26,23,19,0.03); }
+  .track:hover .arr { opacity: 1; transform: translateX(4px); }
+
+  .track .n {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .track .t {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .track .t em { font-style: italic; }
+  .track .notes {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.35;
+  }
+  .track .type {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .track .y {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    text-align: right;
+  }
+  .track .arr {
+    display: none; /* compact grid keeps 5 cols; visual hover via padding */
+  }
+
+  @media (max-width: 900px) {
+    .track { grid-template-columns: 36px 1fr 80px; gap: 14px; }
+    .track .notes, .track .type { display: none; }
+  }
+
+  @media (max-width: 720px) {
+    .chapter-head { grid-template-columns: 1fr; gap: 18px; margin: 48px 0 40px; }
+    .chapter-head .title { transform: none; }
+  }
+</style>
+</head>
+<body data-page="som">
+
+<div class="shell sub-shell">
+
+  <header class="meta">
+    <div class="mark"><a href="index.html">marcvs</a></div>
+    <div>
+      <a href="index.html">índice</a>
+      <span class="dot">·</span>
+      <a href="texto.html">texto</a>
+      <span class="dot">·</span>
+      <a href="som.html">som</a>
+      <span class="dot">·</span>
+      <a href="imagem.html">imagem</a>
+    </div>
+  </header>
+
+  <section class="chapter-head">
+    <h1 class="title">som</h1>
+    <div class="meta-col">
+      <p class="desc">electro, house, techno. releases como marcvs e outros alter-egos — osasco dynamics, missiles at a wedding, sediment.</p>
+      <div class="row"><span>capítulo</span><span>02 / 03</span></div>
+      <div class="row"><span>entradas</span><span>40+</span></div>
+    </div>
+  </section>
+
+  <!-- MARCVS -->
+  <section class="group">
+    <div class="group-head">
+      <h2>marcvs</h2>
+      <span class="count">releases · 10</span>
+    </div>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/412utOHOFV7yXNEnGJxyET" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Sem Sinal</em></div>
+      <div class="notes">feat. DJ Desisto</div>
+      <div class="type">single</div>
+      <div class="y">2026</div>
+    </a>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/6HbqyGkJq1Rm1mHsWl03NT" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>Pouco Grave</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2026</div>
+    </a>
+
+    <a class="track" href="https://problemasdosoutros.bandcamp.com/album/vertigem" target="_blank" rel="noopener">
+      <div class="n">№ 03</div>
+      <div class="t"><em>Vertigem</em></div>
+      <div class="notes">problemas dos outros</div>
+      <div class="type">ep</div>
+      <div class="y">2021</div>
+    </a>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/0ulss9Wq9yCg3AqvaoBW7a" target="_blank" rel="noopener">
+      <div class="n">№ 04</div>
+      <div class="t"><em>Inconsciente Colonial</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/7u3iVUKYGjqIFFex04XpCt" target="_blank" rel="noopener">
+      <div class="n">№ 05</div>
+      <div class="t"><em>Ressaca</em></div>
+      <div class="notes">—</div>
+      <div class="type">ep</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/4Xbfoc5mg3iAbUQi5l4o0D" target="_blank" rel="noopener">
+      <div class="n">№ 06</div>
+      <div class="t"><em>Extrabaixo</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/album/entre-a-manh-e-o-sol-ep" target="_blank" rel="noopener">
+      <div class="n">№ 07</div>
+      <div class="t"><em>Entre o Amanhã e o Sol</em></div>
+      <div class="notes">—</div>
+      <div class="type">ep</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/album/para-so-infinito-2" target="_blank" rel="noopener">
+      <div class="n">№ 08</div>
+      <div class="t"><em>Paraíso Infinito</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/track/acordei-em-um-mundo-diferente" target="_blank" rel="noopener">
+      <div class="n">№ 09</div>
+      <div class="t"><em>Acordei em um Mundo Diferente</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/sets/master-of-patterns-ep" target="_blank" rel="noopener">
+      <div class="n">№ 10</div>
+      <div class="t"><em>Master of All Patterns</em></div>
+      <div class="notes">—</div>
+      <div class="type">ep</div>
+      <div class="y">2017</div>
+    </a>
+  </section>
+
+  <!-- OSASCO DYNAMICS -->
+  <section class="group">
+    <div class="group-head">
+      <h2>osasco dynamics</h2>
+      <span class="count">releases · 02</span>
+    </div>
+
+    <a class="track" href="https://problemasdosoutros.bandcamp.com/album/osasco-dynamics" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Osasco Dynamics</em></div>
+      <div class="notes">problemas dos outros</div>
+      <div class="type">álbum</div>
+      <div class="y">2022</div>
+    </a>
+
+    <a class="track" href="https://problemasdosoutros.bandcamp.com/album/vamping" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>Vamping</em></div>
+      <div class="notes">problemas dos outros</div>
+      <div class="type">ep</div>
+      <div class="y">2020</div>
+    </a>
+  </section>
+
+  <!-- MISSILES AT A WEDDING -->
+  <section class="group">
+    <div class="group-head">
+      <h2>missiles at a wedding</h2>
+      <span class="count">releases · 05</span>
+    </div>
+
+    <a class="track" href="https://soundcloud.com/missilesatawedding/friends" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Friends</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2015</div>
+    </a>
+
+    <a class="track" href="https://trnqr.bandcamp.com/album/trnqr006" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>TRNQR006</em></div>
+      <div class="notes">trnqr</div>
+      <div class="type">ep</div>
+      <div class="y">2015</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/thump/missiles-at-a-wedding-heavy" target="_blank" rel="noopener">
+      <div class="n">№ 03</div>
+      <div class="t"><em>Heavy</em></div>
+      <div class="notes">thump (vice)</div>
+      <div class="type">single</div>
+      <div class="y">2014</div>
+    </a>
+
+    <a class="track" href="https://stepinrecordings.bandcamp.com/album/rove-and-clear-ep" target="_blank" rel="noopener">
+      <div class="n">№ 04</div>
+      <div class="t"><em>Rove and Clear EP</em></div>
+      <div class="notes">step in recordings</div>
+      <div class="type">ep</div>
+      <div class="y">2014</div>
+    </a>
+
+    <a class="track" href="https://www.spin.com/2014/04/hy-brazil-vol-4-brazilian-electronic-music/" target="_blank" rel="noopener">
+      <div class="n">№ 05</div>
+      <div class="t"><em>Hy Brazil Vol. 4</em></div>
+      <div class="notes">—</div>
+      <div class="type">compilation</div>
+      <div class="y">2014</div>
+    </a>
+  </section>
+
+  <!-- COLLABS -->
+  <section class="group">
+    <div class="group-head">
+      <h2>collabs</h2>
+      <span class="count">releases · 02</span>
+    </div>
+
+    <a class="track" href="https://marcvs.bandcamp.com/track/elipse" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Respiro Concreto / Elipse</em></div>
+      <div class="notes">c/ meno del picchia</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/track/tente-normalizar-o-calor-do-rio" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>Tente Normalizar o Calor do Rio</em></div>
+      <div class="notes">c/ lucindo</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+  </section>
+
+  <!-- B-SIDES -->
+  <section class="group">
+    <div class="group-head">
+      <h2>b-sides</h2>
+      <span class="count">releases · 11</span>
+    </div>
+
+    <a class="track" href="https://open.spotify.com/intl-pt/album/2Nd2wvL0mMuoMZSLAosi1g" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Sunday Ride to Teodoro</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2024</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/aranha" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>Aranha</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2024</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/track/transanimalismo" target="_blank" rel="noopener">
+      <div class="n">№ 03</div>
+      <div class="t"><em>Transanimalismo</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2024</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/track/metansiedade-batalha-contra-mim" target="_blank" rel="noopener">
+      <div class="n">№ 04</div>
+      <div class="t"><em>Metansiedade</em></div>
+      <div class="notes">batalha contra mim</div>
+      <div class="type">single</div>
+      <div class="y">2022</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/onda-marcvs-chopped-edit" target="_blank" rel="noopener">
+      <div class="n">№ 05</div>
+      <div class="t"><em>Onda [chopped edit]</em></div>
+      <div class="notes">—</div>
+      <div class="type">edit</div>
+      <div class="y">2022</div>
+    </a>
+
+    <a class="track" href="https://marcvs.bandcamp.com/album/dois-remixes" target="_blank" rel="noopener">
+      <div class="n">№ 06</div>
+      <div class="t"><em>dois remixes</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2021</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/cassiano-onda-marcvs-edit" target="_blank" rel="noopener">
+      <div class="n">№ 07</div>
+      <div class="t">cassiano — <em>Onda (marcvs edit)</em></div>
+      <div class="notes">—</div>
+      <div class="type">edit</div>
+      <div class="y">2021</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/simba" target="_blank" rel="noopener">
+      <div class="n">№ 08</div>
+      <div class="t"><em>Simba</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2020</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/never-been-closer-to-the-truth-but-still-drinking" target="_blank" rel="noopener">
+      <div class="n">№ 09</div>
+      <div class="t"><em>Never Been Closer to the Truth (But Still Drinking)</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2018</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/karma" target="_blank" rel="noopener">
+      <div class="n">№ 10</div>
+      <div class="t"><em>Karma</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2018</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/a-roda-marcus-eu-quero-amor-edit" target="_blank" rel="noopener">
+      <div class="n">№ 11</div>
+      <div class="t">a roda — <em>eu quero amor edit</em></div>
+      <div class="notes">—</div>
+      <div class="type">edit</div>
+      <div class="y">2018</div>
+    </a>
+  </section>
+
+  <!-- SEDIMENT -->
+  <section class="group">
+    <div class="group-head">
+      <h2>sediment</h2>
+      <span class="count">releases · 10</span>
+    </div>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/marcvs-czech" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="t"><em>Czech</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2012</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/close-to-my-borderline" target="_blank" rel="noopener">
+      <div class="n">№ 02</div>
+      <div class="t"><em>Close to My Borderline</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2011</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/fish-around" target="_blank" rel="noopener">
+      <div class="n">№ 03</div>
+      <div class="t"><em>Fish Around</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2011</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/gretchen-if-you-are-feeling-gone" target="_blank" rel="noopener">
+      <div class="n">№ 04</div>
+      <div class="t">gretchen — <em>If You Are Feeling Gone</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2011</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/gretchen-solid-waves" target="_blank" rel="noopener">
+      <div class="n">№ 05</div>
+      <div class="t">gretchen — <em>Solid Waves</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2011</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/rocky-planet" target="_blank" rel="noopener">
+      <div class="n">№ 06</div>
+      <div class="t"><em>Rocky Planet</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2010</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/daniel-merriweather-change-marcvs-remix" target="_blank" rel="noopener">
+      <div class="n">№ 07</div>
+      <div class="t">daniel merriweather — <em>Change (marcvs remix)</em></div>
+      <div class="notes">—</div>
+      <div class="type">remix</div>
+      <div class="y">2009</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/dragonette-fixin-to-thrill-marcvs-acid-piano-mix" target="_blank" rel="noopener">
+      <div class="n">№ 08</div>
+      <div class="t">dragonette — <em>Fixin to Thrill (acid piano mix)</em></div>
+      <div class="notes">—</div>
+      <div class="type">remix</div>
+      <div class="y">2009</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/marcvs-easter-egg" target="_blank" rel="noopener">
+      <div class="n">№ 09</div>
+      <div class="t"><em>Easter Egg</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2009</div>
+    </a>
+
+    <a class="track" href="https://soundcloud.com/marcvscouto/marcvs-robbed-by-two-men" target="_blank" rel="noopener">
+      <div class="n">№ 10</div>
+      <div class="t"><em>Robbed by Two Men</em></div>
+      <div class="notes">—</div>
+      <div class="type">single</div>
+      <div class="y">2009</div>
+    </a>
+  </section>
+
+  <footer class="foot">
+    <div>23°32′s 46°38′w · marcvs · 2026</div>
+    <div><a href="index.html" style="border-bottom:none">← voltar ao índice</a></div>
+  </footer>
+
+</div>
+
+<script src="fade.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marcvs · texto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+  .sub-shell { max-width: 1080px; padding: 44px 80px 60px; }
+  @media (max-width: 720px) { .sub-shell { padding: 28px 28px 48px; } }
+
+  .mark { font-family: var(--serif); font-style: italic; font-size: 22px; letter-spacing: -0.01em; }
+  .mark a { border-bottom: none; }
+
+  /* chapter header grid (shared across subpages) */
+  .chapter-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin: 80px 0 64px;
+  }
+  .chapter-head .title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(96px, 14vw, 192px);
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+  }
+  .chapter-head .meta-col {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 14px;
+    line-height: 1.7;
+  }
+  .chapter-head .meta-col .desc {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--fg);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    max-width: 420px;
+  }
+  .chapter-head .meta-col .row { display: flex; justify-content: space-between; border-top: 1px solid var(--rule-soft); padding: 8px 0; }
+  .chapter-head .meta-col .row span:last-child { color: var(--fg); }
+
+  /* list of entries */
+  .entries { border-top: 1px solid var(--rule); }
+  .entry {
+    display: grid;
+    grid-template-columns: 80px 1fr 220px 90px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left .3s ease, background-color .3s ease;
+  }
+  .entry:hover { padding-left: 12px; background: rgba(26,23,19,0.03); }
+  .entry:hover .arrow { transform: translateX(6px); }
+
+  .entry .n {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .entry .title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 30px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .entry .where {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .entry .arrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: right;
+    color: var(--ink-soft);
+    transition: transform .3s ease;
+  }
+
+  @media (max-width: 720px) {
+    .chapter-head { grid-template-columns: 1fr; gap: 18px; margin: 48px 0 40px; }
+    .entry { grid-template-columns: 40px 1fr; gap: 14px; }
+    .entry .where, .entry .arrow { display: none; }
+  }
+</style>
+</head>
+<body data-page="texto">
+
+<div class="shell sub-shell">
+
+  <header class="meta">
+    <div class="mark"><a href="index.html">marcvs</a></div>
+    <div>
+      <a href="index.html">índice</a>
+      <span class="dot">·</span>
+      <a href="texto.html">texto</a>
+      <span class="dot">·</span>
+      <a href="som.html">som</a>
+      <span class="dot">·</span>
+      <a href="imagem.html">imagem</a>
+    </div>
+  </header>
+
+  <section class="chapter-head">
+    <h1 class="title">texto</h1>
+    <div class="meta-col">
+      <p class="desc">poemas, ensaios e fragmentos publicados em revistas e arquivos avulsos.</p>
+      <div class="row"><span>capítulo</span><span>01 / 03</span></div>
+      <div class="row"><span>atualizado</span><span>2026</span></div>
+    </div>
+  </section>
+
+  <div class="entries">
+
+    <a class="entry" href="https://aboio.com.br/revista/diluvianos" target="_blank" rel="noopener">
+      <div class="n">№ 01</div>
+      <div class="title">diluvianos</div>
+      <div class="where">revista aboio · 2025</div>
+      <div class="arrow">ler —→</div>
+    </a>
+
+    <div class="entry" style="opacity:.55; cursor:default;">
+      <div class="n">№ 02</div>
+      <div class="title" style="font-style:normal; font-family:var(--mono); font-size:16px; letter-spacing:.08em; text-transform:uppercase; color: var(--ink-soft);">em breve</div>
+      <div class="where">próximo texto</div>
+      <div class="arrow">—</div>
+    </div>
+
+  </div>
+
+  <footer class="foot">
+    <div>23°32′s 46°38′w · marcvs · 2026</div>
+    <div><a href="index.html" style="border-bottom:none">← voltar ao índice</a></div>
+  </footer>
+
+</div>
+
+<script src="fade.js"></script>
+</body>
+</html>
