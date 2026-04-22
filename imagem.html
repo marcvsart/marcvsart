@@ -19,27 +19,6 @@
   .sub-shell { max-width: 1080px; padding: 44px 80px 60px; }
   @media (max-width: 720px) { .sub-shell { padding: 28px 28px 48px; } }
 
-  @media (max-width: 720px) {
-  .chapter-head {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin: 48px 0 40px;
-    align-items: start;
-  }
-  .chapter-head .title {
-    font-size: clamp(72px, 22vw, 120px);
-    transform: none;
-  }
-  .chapter-head .meta-col .desc {
-    font-size: 17px;
-    max-width: 100%;
-  }
-  .manifesto {
-    font-size: 20px;
-    margin: 12px 0 56px;
-  }
-}
-
   .mark { font-family: var(--serif); font-style: italic; font-size: 22px; letter-spacing: -0.01em; }
   .mark a { border-bottom: none; }
 
@@ -155,6 +134,12 @@
     .entry { grid-template-columns: 40px 1fr 90px; }
     .entry .chain, .entry .handle { display: none; }
   }
+
+  @media (max-width: 720px) {
+    .chapter-head { grid-template-columns: 1fr; gap: 18px; margin: 48px 0 40px; }
+    .chapter-head .title { transform: none; }
+  }
+  
 </style>
 </head>
 <body data-page="imagem">
