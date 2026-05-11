@@ -22,7 +22,6 @@
 # marcvs
 
 prompting cartographies in the technocracy.
-a name without a surname, drifting through the informational mass.
 
 → [marcvs.art](https://marcvs.art)
 
