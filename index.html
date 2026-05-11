@@ -1,256 +1,571 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>marcvs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-  /* home-specific ------------------------------------------------------- */
-  .home-shell { padding: 44px 80px 60px; max-width: 1280px; }
-  @media (max-width: 720px) { .home-shell { padding: 28px 28px 48px; } }
+  /* sediment — visto em perfil ============================== */
+  :root {
+    --bg:        #E8F1F5;
+    --bg-deep:   #d9e6ec;
+    --ink:       #0e2935;
+    --ink-soft:  #4a6b78;
 
-  /* the signature "marcvs" wordmark at the very top */
+    /* gradação de azuis para os estratos */
+    --c-1: #1A6B85;
+    --c-2: #4A9BB8;
+    --c-3: #00C8D4;
+    --c-4: #2E7D8F;
+    --c-5: #0a4858;
+    --c-6: #6FB5C9;
+
+    --grotesk: "Space Grotesk", "Inter", system-ui, sans-serif;
+    --mono:    "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+    --serif:   "EB Garamond", "Times New Roman", serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--grotesk);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* fundo: scanlines + ruído sutil */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        rgba(10, 72, 88, 0.025) 0,
+        rgba(10, 72, 88, 0.025) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    mix-blend-mode: multiply;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* page-level fade ----------------------------------------- */
+  body { opacity: 0; transition: opacity 520ms ease; }
+  body.loaded  { opacity: 1; }
+  body.leaving { opacity: 0; }
+
+  /* shell --------------------------------------------------- */
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 44px 80px 80px;
+  }
+
+  /* HEADER (mantido idêntico) ------------------------------- */
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin-bottom: 0;
+  }
+  .meta > div:last-child { text-transform: uppercase; }
+  .meta > div:last-child a { text-transform: lowercase; letter-spacing: 0.04em; }
+  .meta a { color: inherit; text-decoration: none; border-bottom: none; }
+  .meta a:hover { color: var(--ink); }
+  .meta .dot { opacity: 0.45; margin: 0 .5ch; }
+
   .mark {
-    font-family: var(--serif);
-    font-style: italic;
+    font-family: var(--grotesk);
+    font-weight: 500;
     font-size: 22px;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
     line-height: 1;
     display: flex;
     align-items: baseline;
-    gap: 16px;
+    gap: 18px;
     flex-wrap: wrap;
+    color: var(--ink);
   }
-  .mark .m { font-style: normal; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); line-height: 1.5; max-width: 560px; }
-
-  .home-intro {
-    margin-top: 44px;
-    margin-bottom: 72px;
-    max-width: 640px;
-    font-family: var(--serif);
-    font-size: 19px;
-    line-height: 1.55;
-    color: var(--ink-soft);
-  }
-  .home-intro em { color: var(--fg); }
-
-  /* the three bands ----------------------------------------------------- */
-  .bands {
-    border-top: 1px solid var(--rule);
-  }
-  .band {
-    display: grid;
-    grid-template-columns: 120px 1fr 320px;
-    column-gap: 40px;
-    align-items: start;
-    padding: 54px 0 58px;
-    border-bottom: 1px solid var(--rule);
-    position: relative;
-    text-decoration: none;
-    color: inherit;
-    transition: background-color .35s ease, padding-left .35s ease;
-  }
-  .band:hover {
-    background: rgba(26,23,19,0.025);
-    padding-left: 18px;
-  }
-  .band:hover .band-arrow { transform: translateX(6px); opacity: 1; }
-  .band:hover .band-title { letter-spacing: -0.025em; }
-
-  .band-no {
+  .mark .m {
+    font-weight: 400;
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-soft);
-    padding-top: 18px;
+    line-height: 1.7;
+    max-width: 560px;
   }
-  .band-no b { font-weight: 500; color: var(--fg); margin-right: .6ch; }
-
-  .band-title {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(72px, 12vw, 168px);
-    line-height: 0.92;
-    letter-spacing: -0.02em;
-    color: var(--fg);
-    transition: letter-spacing .35s ease;
+  .mark .m em {
+    font-style: normal;
+    color: var(--c-1);
   }
-  /* subtle differentiation: each band has a slightly different baseline
-     offset to create the "rhythm irregular, almost handwritten" feel */
-  .band.texto  .band-title { transform: translateY(-6px); }
-  .band.som    .band-title { transform: translateX(18px); }
-  .band.visuals .band-title { transform: translateY(8px) translateX(-4px); }
 
-  .band-side {
+  /* SHUFFLE ------------------------------------------------- */
+  .shuffle-row {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding-top: 18px;
+    justify-content: flex-end;
+    margin-top: 60px;
+    padding-bottom: 16px;
     font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.04em;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     color: var(--ink-soft);
-    line-height: 1.55;
   }
-  .band-side .desc {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 17px;
-    letter-spacing: 0;
-    color: var(--fg);
-    line-height: 1.45;
-    text-transform: none;
-  }
-  .band-arrow {
+  .shuffle {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: crosshair;
+    padding: 4px 0;
+    transition: color .25s ease, letter-spacing .35s ease;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-top: 6px;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--fg);
-    opacity: 0.7;
-    transition: transform .35s ease, opacity .35s ease;
+  }
+  .shuffle:hover { color: var(--c-1); letter-spacing: 0.32em; }
+  .shuffle .icon {
+    display: inline-block;
+    transition: transform .6s cubic-bezier(.5,.05,.2,1);
+  }
+  .shuffle.spinning .icon { transform: rotate(540deg); }
+
+  /* SEDIMENT — strata stack -------------------------------- */
+  .strata {
+    position: relative;
+    margin-top: 24px;
+    padding: 60px 0 120px;
+    min-height: 70vh;
   }
 
-  /* decorative hue swatch strip per band (hints at the subpage color) */
-  .band::before {
+  /* régua de profundidade discreta à esquerda */
+  .strata::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 54px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: 0.0;
-    transition: opacity .35s ease;
-  }
-  .band:hover::before { opacity: 0.5; }
-  .band.texto  { --swatch: #efe7d8; }
-  .band.som    { --swatch: #e6dcc7; }
-  .band.visuals { --swatch: #a89878; }
-
-  .band-swatch {
-    width: 56px;
-    height: 22px;
-    background: var(--swatch);
-    border: 1px solid var(--rule);
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
+    top: 24px;
+    bottom: 24px;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(10, 72, 88, 0.18) 12%,
+      rgba(10, 72, 88, 0.18) 88%,
+      transparent
+    );
   }
 
-  /* footer strip for home */
-  .home-foot {
-    margin-top: 72px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 48px;
+  .stratum {
+    position: relative;
+    display: block;
+    width: max-content;
+    max-width: 80%;
+    text-decoration: none;
+    cursor: crosshair;
+    transition: color .35s ease;
+    will-change: transform;
+  }
+
+  .stratum .label {
+    display: block;
+    font-family: var(--grotesk);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    transition: text-shadow .25s ease, transform .25s ease;
+    position: relative;
+  }
+
+  .stratum .depth {
+    display: block;
     font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: 0.08em;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    opacity: 0.55;
+  }
+
+  .stratum .desc {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    max-width: 360px;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition: opacity .35s ease, transform .35s ease;
+    pointer-events: none;
+  }
+  .stratum:hover .desc { opacity: 0.9; transform: translateY(0); }
+
+  /* hover: pequeno glitch chromático mais forte */
+  .stratum:hover .label {
+    text-shadow:
+      -1.5px 0 rgba(0, 200, 212, 0.85),
+      1.5px 0 rgba(216, 75, 168, 0.6);
+  }
+
+  /* per-stratum styles: tamanho, peso, cor, posição */
+  .stratum.s1 { color: var(--c-1); }
+  .stratum.s1 .label { font-size: clamp(48px, 7vw, 96px); font-weight: 500; }
+
+  .stratum.s2 { color: var(--c-3); }
+  .stratum.s2 .label { font-size: clamp(36px, 5.5vw, 76px); font-weight: 300; letter-spacing: 0.08em; }
+
+  .stratum.s3 { color: var(--c-2); }
+  .stratum.s3 .label { font-size: clamp(54px, 8vw, 112px); font-weight: 400; }
+
+  .stratum.s4 { color: var(--c-4); }
+  .stratum.s4 .label { font-size: clamp(32px, 4.5vw, 60px); font-weight: 500; letter-spacing: 0.12em; }
+
+  .stratum.s5 { color: var(--c-5); }
+  .stratum.s5 .label { font-size: clamp(40px, 6vw, 84px); font-weight: 400; }
+
+  .stratum.s6 { color: var(--c-2); }
+  .stratum.s6 .label { font-size: clamp(38px, 5.8vw, 80px); font-weight: 400; letter-spacing: 0.04em; font-style: italic; font-family: var(--serif); }
+
+  /* placeholder slot — visualmente mais sutil */
+  .stratum.placeholder {
+    color: var(--ink-soft);
+    pointer-events: none;
+  }
+  .stratum.placeholder .label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0.35;
+  }
+  .stratum.placeholder .label::before { content: "[ "; }
+  .stratum.placeholder .label::after { content: " ]"; }
+
+  /* glitch state — applied via JS */
+  .glitching .label {
+    animation: glitch 200ms steps(2, end);
+  }
+  @keyframes glitch {
+    0%   { transform: translateX(0);   text-shadow: none; clip-path: inset(0 0 0 0); }
+    20%  { transform: translateX(-4px); text-shadow: 2px 0 rgba(0, 200, 212, 0.9), -2px 0 rgba(216, 75, 168, 0.7); clip-path: inset(20% 0 35% 0); }
+    40%  { transform: translateX(5px);  text-shadow: -2px 0 rgba(0, 200, 212, 0.9), 2px 0 rgba(216, 75, 168, 0.7); clip-path: inset(45% 0 10% 0); }
+    60%  { transform: translateX(-3px); text-shadow: 1.5px 0 rgba(0, 200, 212, 0.7); clip-path: inset(0 0 0 0); }
+    100% { transform: translateX(0);   text-shadow: none; clip-path: inset(0 0 0 0); }
+  }
+
+  /* during shuffle, all strata slide smoothly */
+  .strata.shuffling .stratum-wrap {
+    transition: margin-left 600ms cubic-bezier(.4, .0, .2, 1);
+  }
+
+  .stratum-wrap {
+    position: relative;
+    transition: margin-left 600ms cubic-bezier(.4, .0, .2, 1);
+  }
+
+  /* spacing between strata: irregular */
+  .stratum-wrap + .stratum-wrap { margin-top: var(--gap, 80px); }
+
+  /* footer ------------------------------------------------- */
+  .foot {
+    margin-top: 80px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(10, 72, 88, 0.12);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--ink-soft);
   }
-  .home-foot a { color: inherit; border-bottom: none; }
-  .home-foot a:hover { color: var(--fg); }
-  .home-foot .col b { display: block; font-weight: 400; color: var(--fg); margin-bottom: 10px; letter-spacing: 0.12em; }
-  .home-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  .foot a { color: inherit; text-decoration: none; border-bottom: none; }
+  .foot a:hover { color: var(--ink); }
 
-  @media (max-width: 1040px) {
-    .home-shell { padding: 36px 44px 56px; }
-    .band { grid-template-columns: 96px 1fr 260px; column-gap: 28px; }
-    .band-title { font-size: clamp(64px, 11vw, 140px); }
-  }
-  @media (max-width: 820px) {
-    .band { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 38px; }
-    .band-no { padding-top: 0; }
-    .band-side { padding-top: 0; }
-    .band:hover { padding-left: 0; }
-    .home-foot { grid-template-columns: 1fr; gap: 28px; }
+  @media (max-width: 720px) {
+    .shell { padding: 28px 24px 56px; }
+    .strata { padding: 40px 0 80px; }
+    .stratum { max-width: 100%; }
+    .stratum-wrap + .stratum-wrap { margin-top: 56px; }
+    .stratum.s1 .label { font-size: 44px; }
+    .stratum.s2 .label { font-size: 32px; }
+    .stratum.s3 .label { font-size: 48px; }
+    .stratum.s4 .label { font-size: 28px; }
+    .stratum.s5 .label { font-size: 36px; }
+    .stratum.s6 .label { font-size: 34px; }
   }
 </style>
 </head>
 <body data-page="home">
 
-<div class="shell home-shell">
+<div class="shell">
 
   <header class="meta">
-    <div class="mark">marcvs<span class="m">artist<br>random.(image, sound, text)<br>prompting cartographies in the technocracy</span></div>
+    <div class="mark">marcvs<span class="m"><em>artist</em><br>random.(image, music, text)<br>prompting cartographies in the technocracy</span></div>
     <div>são paulo <span class="dot">·</span> 23°32′s 46°38′w</div>
   </header>
 
-</br>
-  
-  <nav class="bands no-top-rule">
+  <div class="shuffle-row">
+    <button class="shuffle" type="button" aria-label="shuffle strata">
+      <span class="icon">↻</span>
+      <span>shuffle</span>
+    </button>
+  </div>
 
-    <a href="texto.html" class="band texto">
-      <div class="band-no"><b>01</b>capítulo</div>
-      <div class="band-title">texto</div>
-      <div class="band-side">
-        <p class="desc">poemas, ensaios e fragmentos. publicações em revistas e textos avulsos.</p>
-        <span class="band-arrow">entrar &nbsp;—→</span>
-      </div>
-    </a>
+  <main class="strata" id="strata"></main>
 
-    <a href="som.html" class="band som">
-      <div class="band-no"><b>02</b>capítulo</div>
-      <div class="band-title">som</div>
-      <div class="band-side">
-        <p class="desc">releases, eps, singles, b-sides e colaborações. marcvs, osasco dynamics, missiles at a wedding, sediment.</p>
-        <span class="band-arrow">entrar &nbsp;—→</span>
-      </div>
-    </a>
-
-    <a href="visuals.html" class="band visuals">
-      <div class="band-no"><b>03</b>capítulo</div>
-      <div class="band-title">visuals</div>
-      <div class="band-side">
-        <p class="desc">arquivo audiovisual e pinturas mintadas em tezos, ethereum e bitcoin ordinals.</p>
-        <span class="band-arrow">entrar &nbsp;—→</span>
-      </div>
-    </a>
-
-  </nav>
-
-  <footer class="home-foot">
-    <div class="col">
-      <b>listen</b>
-      <ul>
-        <li><a href="https://open.spotify.com/intl-pt/artist/2iAvxak56T6JZKjhP7k0ea" target="_blank" rel="noopener">spotify</a></li>
-        <li><a href="https://marcvs.bandcamp.com" target="_blank" rel="noopener">bandcamp</a></li>
-        <li><a href="https://soundcloud.com/marcvscouto" target="_blank" rel="noopener">soundcloud</a></li>
-      </ul>
-    </div>
-    <div class="col">
-      <b>elsewhere</b>
-      <ul>
-        <li><a href="https://instagram.com/marcvs" target="_blank" rel="noopener">instagram</a></li>
-        <li><a href="https://github.com/marcvsart" target="_blank" rel="noopener">github</a></li>
-        <li><a href="https://twitter.com/marcvs" target="_blank" rel="noopener">x / twitter</a></li>
-      </ul>
-    </div>
-    <div class="col" style="text-align:right">
-      <b>colofão</b>
-      <ul style="align-items:flex-end">
-        <li>são paulo, 2026</li>
-        <li>eb garamond / jetbrains mono</li>
-        <li>sem cookies, sem analytics</li>
-      </ul>
-    </div>
+  <footer class="foot">
+    <div>23°32′s 46°38′w · marcvs · 2026</div>
+    <div>são paulo</div>
   </footer>
 
 </div>
 
 <script src="fade.js"></script>
+<script>
+  // ============================================================
+  // Strata list. To add a new link, just append an object here —
+  // the system generates the rest on its own.
+  // ============================================================
+  const STRATA = [
+    {
+      label: "my drawer of dreams",
+      href:  "https://manifold.xyz/@marcvs",
+      desc:  "contract on ethereum (manifold). mostly ai stuff",
+      depth: "stratum 01 · −12m",
+      cls:   "s1",
+      offset: 8,        // initial horizontal %
+      float: { x: 2, y: 3, dur: 8.4,  delay: 0   },
+      glitch: { every: [6, 12] }
+    },
+    {
+      label: "colors from within",
+      href:  "https://www.transient.xyz/nfts/ethereum/0x80bf8004eb223ada632e4b674ac0ce4d6e464922",
+      desc:  "my foundation (rip) contract, now on transient. digital paintings, film and ai stuff.",
+      depth: "stratum 02 · −38m",
+      cls:   "s2",
+      offset: 58,
+      float: { x: 3, y: 2, dur: 11.2, delay: 1.4 },
+      glitch: { every: [8, 15] }
+    },
+    {
+      label: "objkt: art on tezos",
+      href:  "https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa/created",
+      desc:  "digital paintings, glitched photography, films and poetry",
+      depth: "stratum 03 · −67m",
+      cls:   "s3",
+      offset: 22,
+      float: { x: 2, y: 4, dur: 7.6,  delay: 0.8 },
+      glitch: { every: [5, 10] }
+    },
+    {
+      label: "music",
+      href:  "som.html",
+      desc:  "releases, eps and b-sides",
+      depth: "stratum 04 · −94m",
+      cls:   "s4",
+      offset: 70,
+      float: { x: 4, y: 2, dur: 9.5,  delay: 2.1 },
+      glitch: { every: [7, 14] }
+    },
+    {
+      label: "fragments of acrylic",
+      href:  "https://gamma.io/ordinals/collections/fragments-of-acrylic",
+      desc:  "ordinal art on bitcoin · gamma",
+      depth: "stratum 05 · −115m",
+      cls:   "s6",
+      offset: 14,
+      float: { x: 3, y: 3, dur: 10.3, delay: 1.9 },
+      glitch: { every: [7, 13] }
+    },
+    {
+      label: "sedimenting",
+      href:  null,
+      desc:  null,
+      depth: "stratum 05 · −??m",
+      cls:   "s5 placeholder",
+      offset: 38,
+      float: { x: 2, y: 3, dur: 13.0, delay: 3.2 },
+      glitch: { every: [9, 18] }
+    }
+  ];
+
+  const root = document.getElementById('strata');
+
+  // On every load: shuffle order and randomize horizontal offset.
+  // Fisher–Yates on a copy so the source STRATA array stays intact.
+  const ORDER = STRATA.slice();
+  for (let i = ORDER.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [ORDER[i], ORDER[j]] = [ORDER[j], ORDER[i]];
+  }
+
+  // build DOM
+  ORDER.forEach((s, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'stratum-wrap';
+    wrap.style.setProperty('--gap', (60 + (i % 3) * 30) + 'px');
+    wrap.style.marginLeft = Math.floor(Math.random() * 70) + '%';
+
+    const tag = s.href ? 'a' : 'div';
+    const el = document.createElement(tag);
+    el.className = 'stratum ' + s.cls;
+    if (s.href) {
+      el.href = s.href;
+      if (/^https?:/.test(s.href)) { el.target = '_blank'; el.rel = 'noopener'; }
+    }
+    el.innerHTML =
+      '<span class="label">' + s.label + '</span>' +
+      (s.desc ? '<span class="desc">' + s.desc + '</span>' : '');
+
+    // floating animation via Web Animations API
+    const fx = s.float.x, fy = s.float.y;
+    const anim = el.animate(
+      [
+        { transform: 'translate(0px, 0px)' },
+        { transform: 'translate(' +  fx + 'px, ' + (-fy) + 'px)' },
+        { transform: 'translate(' + (-fx*0.6) + 'px, ' + fy + 'px)' },
+        { transform: 'translate(0px, 0px)' }
+      ],
+      {
+        duration: s.float.dur * 1000,
+        delay: s.float.delay * 1000,
+        iterations: Infinity,
+        easing: 'ease-in-out'
+      }
+    );
+    el._anim = anim;
+
+    // pause on hover
+    el.addEventListener('mouseenter', () => {
+      anim.playbackRate = 0.15;
+      // stronger glitch on hover
+      el.classList.remove('glitching');
+      void el.offsetWidth;
+      el.classList.add('glitching');
+    });
+    el.addEventListener('mouseleave', () => { anim.playbackRate = 1; });
+
+    // schedule random glitches
+    const scheduleGlitch = () => {
+      const [lo, hi] = s.glitch.every;
+      const wait = (lo + Math.random() * (hi - lo)) * 1000;
+      setTimeout(() => {
+        el.classList.remove('glitching');
+        void el.offsetWidth;
+        el.classList.add('glitching');
+        scheduleGlitch();
+      }, wait);
+    };
+    setTimeout(scheduleGlitch, 1500 + Math.random() * 4000);
+
+    wrap.appendChild(el);
+    root.appendChild(wrap);
+  });
+
+  // shuffle: randomize BOTH horizontal offset and vertical order.
+  // Uses FLIP technique to animate the DOM reordering smoothly.
+  const shuffleBtn = document.querySelector('.shuffle');
+  shuffleBtn.addEventListener('click', () => {
+    shuffleBtn.classList.add('spinning');
+
+    const wraps = [...root.querySelectorAll('.stratum-wrap')];
+
+    // FIRST — record current positions
+    const firstRects = new Map();
+    wraps.forEach(w => firstRects.set(w, w.getBoundingClientRect()));
+
+    // shuffle DOM order (Fisher–Yates)
+    const shuffled = wraps.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    shuffled.forEach(w => root.appendChild(w));
+
+    // also randomize horizontal offset
+    shuffled.forEach(w => {
+      const newOffset = Math.floor(Math.random() * 70);
+      w.style.marginLeft = newOffset + '%';
+    });
+
+    // LAST + INVERT + PLAY
+    requestAnimationFrame(() => {
+      shuffled.forEach((w, i) => {
+        const last = w.getBoundingClientRect();
+        const first = firstRects.get(w);
+        const dx = first.left - last.left;
+        const dy = first.top  - last.top;
+        // reset to old position with no transition
+        w.style.transition = 'none';
+        w.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+        // force reflow, then animate to natural position
+        void w.offsetWidth;
+        w.style.transition = 'transform 700ms cubic-bezier(.4,0,.2,1)';
+        w.style.transform = 'translate(0, 0)';
+
+        // glitch burst during recalibration
+        const el = w.querySelector('.stratum');
+        let bursts = 3;
+        const burst = () => {
+          el.classList.remove('glitching');
+          void el.offsetWidth;
+          el.classList.add('glitching');
+          if (--bursts > 0) setTimeout(burst, 180);
+        };
+        setTimeout(burst, i * 80);
+      });
+    });
+
+    setTimeout(() => {
+      shuffleBtn.classList.remove('spinning');
+      // clear inline transform/transition so float animation owns transform again
+      shuffled.forEach(w => {
+        w.style.transition = '';
+        w.style.transform = '';
+      });
+    }, 800);
+  });
+
+  // mobile: dampen offsets
+  if (window.matchMedia('(max-width: 720px)').matches) {
+    [...root.querySelectorAll('.stratum-wrap')].forEach(w => {
+      const cur = parseFloat(w.style.marginLeft);
+      w.style.marginLeft = (cur * 0.35) + '%';
+    });
+  }
+</script>
 </body>
 </html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marcvs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+  /* home-specific ------------------------------------------------------- */
+  .home-shell { padding: 44px 80px 60px; max-width: 1280px; }
+  @media (max-width: 720px) { .home-shell { padding: 28px 28px 48px; } }
+
+  /* the signature "marcvs" wordmark at the very top */
+  .mark {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .mark .m { font-style: normal; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); line-height: 1.5; max-width: 560px; }
+
+  .home-intro {
+    margin-top: 44px;
+    margin-bottom: 72px;
+    max-width: 640px;
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .home-intro em { color: var(--fg); }
+
+  /* the three bands ----------------------------------------------------- */
+  .bands {
+    border-top: 1px solid var(--rule);
+  }
+  .band {
+    display: grid;
+    grid-template-columns: 120px 1fr 320px;
+    column-gap: 40px;
+    align-items: start;
+    padding: 54px 0 58px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color .35s ease, padding-left .35s ease;
+  }
+  .band:hover {
+    background: rgba(26,23,19,0.025);
+    padding-left: 18px;
+  }
+  .band:hover .band-arrow { transform: translateX(6px); opacity: 1; }
+  .band:hover .band-title { letter-spacing: -0.025em; }
+
+  .band-no {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-top: 18px;
+  }
+  .band-no b { font-weight: 500; color: var(--fg); margin-right: .6ch; }
+
+  .band-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(72px, 12vw, 168px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    transition: letter-spacing .35s ease;
+  }
+  /* subtle differentiation: each band has a slightly different baseline
+     offset to create the "rhythm irregular, almost handwritten" feel */
+  .band.texto  .band-title { transform: translateY(-6px); }
+  .band.som    .band-title { transform: translateX(18px); }
+  .band.imagem .band-title { transform: translateY(8px) translateX(-4px); }
+
+  .band-side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .band-side .desc {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0;
+    color: var(--fg);
+    line-height: 1.45;
+    text-transform: none;
+  }
+  .band-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg);
+    opacity: 0.7;
+    transition: transform .35s ease, opacity .35s ease;
+  }
+
+  /* decorative hue swatch strip per band (hints at the subpage color) */
+  .band::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 54px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.0;
+    transition: opacity .35s ease;
+  }
+  .band:hover::before { opacity: 0.5; }
+  .band.texto  { --swatch: #efe7d8; }
+  .band.som    { --swatch: #e6dcc7; }
+  .band.imagem { --swatch: #a89878; }
+
+  .band-swatch {
+    width: 56px;
+    height: 22px;
+    background: var(--swatch);
+    border: 1px solid var(--rule);
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  /* footer strip for home */
+  .home-foot {
+    margin-top: 72px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .home-foot a { color: inherit; border-bottom: none; }
+  .home-foot a:hover { color: var(--fg); }
+  .home-foot .col b { display: block; font-weight: 400; color: var(--fg); margin-bottom: 10px; letter-spacing: 0.12em; }
+  .home-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+
+  @media (max-width: 1040px) {
+    .home-shell { padding: 36px 44px 56px; }
+    .band { grid-template-columns: 96px 1fr 260px; column-gap: 28px; }
+    .band-title { font-size: clamp(64px, 11vw, 140px); }
+  }
+  @media (max-width: 820px) {
+    .band { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 38px; }
+    .band-no { padding-top: 0; }
+    .band-side { padding-top: 0; }
+    .band:hover { padding-left: 0; }
+    .home-foot { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>
+</head>
+<body data-page="home">
+
+<div class="shell home-shell">
+
+  <header class="meta">
+    <div class="mark">marcvs<span class="m">poeta · escritor · jornalista<br>compositor · produtor de electro<br>pintor e artista visual</span></div>
+    <div>são paulo <span class="dot">·</span> 23°32′s 46°38′w</div>
+  </header>
+
+  <nav class="bands no-top-rule">
+
+    <a href="texto.html" class="band texto">
+      <div class="band-no"><b>01</b>capítulo</div>
+      <div class="band-title">texto</div>
+      <div class="band-side">
+        <p class="desc">poemas, ensaios e fragmentos. publicações em revistas e textos avulsos.</p>
+        <span class="band-arrow">entrar &nbsp;—→</span>
+      </div>
+    </a>
+
+    <a href="som.html" class="band som">
+      <div class="band-no"><b>02</b>capítulo</div>
+      <div class="band-title">som</div>
+      <div class="band-side">
+        <p class="desc">releases, eps, singles, b-sides e colaborações. marcvs, osasco dynamics, missiles at a wedding, sediment.</p>
+        <span class="band-arrow">entrar &nbsp;—→</span>
+      </div>
+    </a>
+
+    <a href="imagem.html" class="band imagem">
+      <div class="band-no"><b>03</b>capítulo</div>
+      <div class="band-title">imagem</div>
+      <div class="band-side">
+        <p class="desc">arquivo audiovisual e pinturas mintadas em tezos, ethereum e bitcoin ordinals.</p>
+        <span class="band-arrow">entrar &nbsp;—→</span>
+      </div>
+    </a>
+
+  </nav>
+
+  <footer class="home-foot">
+    <div class="col">
+      <b>listen</b>
+      <ul>
+        <li><a href="https://open.spotify.com/intl-pt/artist/2iAvxak56T6JZKjhP7k0ea" target="_blank" rel="noopener">spotify</a></li>
+        <li><a href="https://marcvs.bandcamp.com" target="_blank" rel="noopener">bandcamp</a></li>
+        <li><a href="https://soundcloud.com/marcvscouto" target="_blank" rel="noopener">soundcloud</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <b>elsewhere</b>
+      <ul>
+        <li><a href="https://instagram.com/marcvs" target="_blank" rel="noopener">instagram</a></li>
+        <li><a href="https://github.com/marcvsart" target="_blank" rel="noopener">github</a></li>
+        <li><a href="https://twitter.com/marcvs" target="_blank" rel="noopener">x / twitter</a></li>
+      </ul>
+    </div>
+    <div class="col" style="text-align:right">
+      <b>colofão</b>
+      <ul style="align-items:flex-end">
+        <li>são paulo, 2026</li>
+        <li>eb garamond / jetbrains mono</li>
+        <li>sem cookies, sem analytics</li>
+      </ul>
+    </div>
+  </footer>
+
+</div>
+
+<script src="fade.js"></script>
+</body>
+</html>
