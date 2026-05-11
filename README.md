@@ -29,8 +29,6 @@ prompting cartographies in the technocracy.
 
 ### strata
 
-every reload shuffles the order. depth is the only constant.
-
 ```
 stratum 01  −12m   my drawer of dreams      → manifold.xyz/@marcvs
 stratum 02  −38m   colors from within       → transient.xyz
@@ -45,7 +43,7 @@ stratum ??  −??m   sedimenting              → (placeholder)
 - [objkt: art on tezos](https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa/created) — digital paintings, glitched photography, films, poetry
 - [music](https://marcvs.art/som.html) — releases, eps, b-sides
 - [fragments of acrylic](https://gamma.io/ordinals/collections/fragments-of-acrylic) — ordinal art on bitcoin
-- [mystery island](https://github.com/m-cout/mystery_island) — *2019 · text adventure in python · where it all began*
+- [mystery island](https://github.com/m-cout/mystery_island) — *2019 · text adventure in python*
 
 ---
 
