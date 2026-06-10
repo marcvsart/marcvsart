@@ -142,6 +142,15 @@
     text-transform: lowercase;
     color: var(--white);
     line-height: 1;
+    cursor: crosshair;
+    width: max-content; max-width: 100%;
+  }
+  /* letras individuais: desintegram no hover via js */
+  .mark h1 .ch {
+    display: inline-block;
+    min-width: 0.62em;       /* trava a largura p/ glifos de corrupção */
+    text-align: center;
+    will-change: transform, opacity;
   }
   .mark .tag {
     margin-top: 18px;
@@ -270,13 +279,17 @@
     animation: blink 2.6s steps(2) infinite;
   }
 
-  /* glitch monocromático: fatias horizontais deslizando */
-  .glitching .label { animation: slice 200ms steps(3, end); }
+  /* glitch monocromático agressivo: fatias rasgando */
+  .glitching .label { animation: slice 320ms steps(6, end); }
   @keyframes slice {
-    0%   { transform: none; clip-path: none; }
-    30%  { transform: translateX(-5px); clip-path: inset(10% 0 55% 0); }
-    60%  { transform: translateX(6px);  clip-path: inset(60% 0 8% 0); }
-    100% { transform: none; clip-path: none; }
+    0%   { transform: none; clip-path: none; opacity: 1; }
+    12%  { transform: translateX(-14px) skewX(-5deg); clip-path: inset(5% 0 68% 0); }
+    26%  { transform: translateX(11px) translateY(3px); clip-path: inset(42% 0 28% 0); opacity: .7; }
+    40%  { transform: translateX(-9px) scaleX(1.04); clip-path: inset(74% 0 2% 0); }
+    55%  { transform: translateX(16px) skewX(4deg); clip-path: inset(18% 0 56% 0); opacity: .85; }
+    70%  { transform: translateX(-12px) translateY(-3px); clip-path: inset(60% 0 12% 0); }
+    85%  { transform: translateX(6px); clip-path: inset(30% 0 40% 0); opacity: .6; }
+    100% { transform: none; clip-path: none; opacity: 1; }
   }
 
   /* ---- foot ---------------------------------------------------------- */
@@ -326,7 +339,7 @@
     <h1 style="color:#f4f4f0">marcvs · artist</h1>
     <p>random.(image, sound, text) · prompting cartographies in the technocracy · são paulo</p>
     <ul>
-      <li><a style="color:#33ff66" href="https://www.instagram.com/lusco.films/">luscofilms — phantom videography</a></li>
+      <li><a style="color:#33ff66" href="https://www.tiktok.com/@luscofilms">luscofilms — phantom videography</a></li>
       <li><a style="color:#33ff66" href="https://manifold.xyz/@marcvs">my drawer of dreams (manifold)</a></li>
       <li><a style="color:#33ff66" href="https://www.transient.xyz/nfts/ethereum/0x80bf8004eb223ada632e4b674ac0ce4d6e464922">colors from within (transient)</a></li>
       <li><a style="color:#33ff66" href="https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa/created">objkt: art on tezos</a></li>
@@ -387,7 +400,7 @@
   const STRATA = [
     {
       label: "luscofilms",
-      href:  "https://www.instagram.com/lusco.films/",
+      href:  "https://www.tiktok.com/@luscofilms",
       desc:  "phantom videography · sfx-with-ai · sci-fi & horror that never premiered",
       path:  "/strata/01 · −12m",
       cls:   "prime",
@@ -453,6 +466,88 @@
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile  = window.matchMedia('(max-width: 720px)').matches;
+
+  // ============================================================
+  // MOTOR DE CORRUPÇÃO — caracteres se degradam em glifos de
+  // bloco/ruído e se recompõem. usado nos hovers.
+  // ============================================================
+  const GLYPHS = "█▓▒░<>/\\|#%&@*+=~^?!;:01";
+  const rg = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+
+  // h1 corrompe em glifos arcanos: apl, braille, runas, operadores
+  const H1GLYPHS = [..."⍒⍋⌽⍉⊖⍟⍝⌬⌭∴∵≡∮∂∇⊗⊘⊕⌖ᚠᚱᛉᛟᚹᛞ⣿⠿⢸⡷⡇⠛ʘʬʭɸ▚▞▙▜▟╬╪╫"];
+  const rh = () => H1GLYPHS[Math.floor(Math.random() * H1GLYPHS.length)];
+
+  // corrompe e resolve: probabilidade de corrupção decai até 0
+  function scrambleResolve(el, original, dur) {
+    if (!el || el._scr) return;
+    const t0 = performance.now();
+    el._scr = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / dur);
+      const p = (1 - k) * 0.85;             // começa quase tudo corrompido
+      let out = "";
+      for (const c of original) {
+        out += (c === " " || Math.random() > p) ? c : rg();
+      }
+      el.textContent = out;
+      if (k >= 1) stopScramble(el, original);
+    }, 34);
+  }
+  function stopScramble(el, original) {
+    if (!el) return;
+    clearInterval(el._scr); el._scr = null;
+    el.textContent = original;
+  }
+
+  // ---- "marcvs": desintegração por letra enquanto o mouse está em cima
+  (function markDisintegrate() {
+    const h1 = document.querySelector('.mark h1');
+    const word = h1.textContent;
+    h1.innerHTML = [...word].map(c => '<span class="ch">' + c + '</span>').join('');
+    if (reduced) return;
+    const chs = [...h1.querySelectorAll('.ch')];
+    let raf = null, leaving = false, leaveT = 0;
+
+    function frame() {
+      const settle = leaving ? Math.min(1, (performance.now() - leaveT) / 450) : 0;
+      chs.forEach((ch, i) => {
+        const p = (1 - settle) * 0.8;       // intensidade da desintegração
+        if (Math.random() < p) {
+          // letra corrompe: glifo arcano + deslocamento + fade
+          ch.textContent = rh();
+          const a = (1 - settle);
+          ch.style.transform =
+            'translate(' + ((Math.random() - .5) * 22 * a) + 'px,' +
+                           ((Math.random() - .5) * 26 * a) + 'px)' +
+            ' rotate(' + ((Math.random() - .5) * 24 * a) + 'deg)';
+          ch.style.opacity = (0.15 + Math.random() * 0.85).toFixed(2);
+          ch.style.color = Math.random() < 0.12 ? 'var(--green)'
+                         : Math.random() < 0.3  ? 'var(--g3)' : '';
+        } else {
+          ch.textContent = word[i];
+          ch.style.transform = '';
+          ch.style.opacity = '';
+          ch.style.color = '';
+        }
+      });
+      if (leaving && settle >= 1) {
+        chs.forEach((ch, i) => {
+          ch.textContent = word[i];
+          ch.style.transform = ''; ch.style.opacity = ''; ch.style.color = '';
+        });
+        raf = null; return;
+      }
+      raf = setTimeout(frame, 42);          // ~24fps, cadência de tubo
+    }
+
+    h1.addEventListener('mouseenter', () => {
+      leaving = false;
+      if (!raf) frame();
+    });
+    h1.addEventListener('mouseleave', () => {
+      leaving = true; leaveT = performance.now();
+    });
+  })();
 
   // ---- boot: terminal digitando -------------------------------
   const BOOTLINES = [
@@ -577,9 +672,14 @@
       (s.desc ? '<span class="desc">' + s.desc + '</span>' : '');
 
     if (!reduced) {
+      const labelEl = () => el.querySelector('.label');
       el.addEventListener('mouseenter', () => {
         el.classList.remove('glitching'); void el.offsetWidth;
         el.classList.add('glitching');
+        scrambleResolve(labelEl(), s.label, 420);
+      });
+      el.addEventListener('mouseleave', () => {
+        stopScramble(labelEl(), s.label);
       });
       const schedule = () => {
         const [lo, hi] = s.glitch;
