@@ -190,6 +190,12 @@
     line-height: 1.9;
     color: var(--g2);
   }
+  /* defrag: palavras íntegras, caracteres como partículas */
+  .bio p .bw { display: inline-block; white-space: nowrap; }
+  .bio p .bch {
+    display: inline-block;
+    will-change: transform;
+  }
 
   /* ---- command row (shuffle) ------------------------------------- */
   .cmd-row {
@@ -525,6 +531,94 @@
     clearInterval(el._scr); el._scr = null;
     el.textContent = original;
   }
+
+  // ============================================================
+  // DEFRAG DA BIO — cada caractere é uma partícula: repele o
+  // ponteiro e volta por mola. mesmo princípio do defrag.js
+  // do portfólio, em modo por-caractere.
+  // ============================================================
+  (function bioDefrag() {
+    const p = document.querySelector('.bio p');
+    if (!p || reduced || mobile) return;
+
+    // quebra em palavras (íntegras p/ wrap) e chars
+    const words = p.textContent.split(' ');
+    p.innerHTML = words.map(w =>
+      '<span class="bw">' +
+      [...w].map(c => '<span class="bch">' + c + '</span>').join('') +
+      '</span>'
+    ).join(' ');
+
+    const chars = [...p.querySelectorAll('.bch')];
+    const N = chars.length;
+    // estado por partícula: centro (cache), offset atual, velocidade
+    const cx = new Float32Array(N), cy = new Float32Array(N);
+    const ox = new Float32Array(N), oy = new Float32Array(N);
+    const vx = new Float32Array(N), vy = new Float32Array(N);
+
+    function cacheCenters() {
+      chars.forEach((ch, i) => {
+        const r = ch.getBoundingClientRect();
+        cx[i] = r.left + r.width / 2 + window.scrollX;
+        cy[i] = r.top + r.height / 2 + window.scrollY;
+      });
+    }
+    // transforms não afetam layout, então o cache só invalida em resize
+    cacheCenters();
+    let rzT;
+    window.addEventListener('resize', () => {
+      clearTimeout(rzT); rzT = setTimeout(cacheCenters, 200);
+    });
+    // fontes carregam depois e mudam métricas
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(cacheCenters);
+
+    const RADIUS = 110;      // alcance da repulsão
+    const FORCE  = 34;       // deslocamento máximo em px
+    const SPRING = 0.16;     // rigidez da mola de retorno
+    const DAMP   = 0.72;     // amortecimento
+
+    let mx = -9999, my = -9999, raf = null, idle = 0;
+
+    function frame() {
+      idle = 0;
+      for (let i = 0; i < N; i++) {
+        const dx = cx[i] + ox[i] - mx;
+        const dy = cy[i] + oy[i] - my;
+        const d  = Math.hypot(dx, dy);
+        let tx = 0, ty = 0;
+        if (d < RADIUS && d > 0.001) {
+          const f = (1 - d / RADIUS);
+          tx = (dx / d) * f * FORCE;
+          ty = (dy / d) * f * FORCE;
+        }
+        // mola em direção ao alvo
+        vx[i] = (vx[i] + (tx - ox[i]) * SPRING) * DAMP;
+        vy[i] = (vy[i] + (ty - oy[i]) * SPRING) * DAMP;
+        ox[i] += vx[i]; oy[i] += vy[i];
+
+        const mag = Math.abs(ox[i]) + Math.abs(oy[i]);
+        if (mag > 0.15 || Math.abs(vx[i]) + Math.abs(vy[i]) > 0.05) {
+          chars[i].style.transform =
+            'translate(' + ox[i].toFixed(1) + 'px,' + oy[i].toFixed(1) + 'px)';
+          idle++;
+        } else if (chars[i].style.transform) {
+          chars[i].style.transform = '';
+          ox[i] = oy[i] = vx[i] = vy[i] = 0;
+        }
+      }
+      raf = idle > 0 ? requestAnimationFrame(frame) : null;
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      mx = e.pageX; my = e.pageY;
+      // só acorda o loop se o ponteiro está na região da bio
+      const r = p.getBoundingClientRect();
+      const near = e.clientY > r.top - RADIUS && e.clientY < r.bottom + RADIUS &&
+                   e.clientX > r.left - RADIUS && e.clientX < r.right + RADIUS;
+      if (near && !raf) raf = requestAnimationFrame(frame);
+    });
+    document.addEventListener('mouseleave', () => { mx = my = -9999; });
+  })();
 
   // ---- "marcvs": desintegração por letra enquanto o mouse está em cima
   (function markDisintegrate() {
