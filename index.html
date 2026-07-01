@@ -187,8 +187,16 @@
     font-weight: 300;
     font-size: 13.5px;
     letter-spacing: 0.03em;
-    line-height: 1.9;
+    line-height: 2.1;
     color: var(--g2);
+  }
+  /* bloco como texto selecionado: faixas brancas por linha, texto preto */
+  .bio p .sel {
+    background: var(--white);
+    color: var(--black);
+    padding: 3px 6px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
   /* defrag: palavras íntegras, caracteres como partículas */
   .bio p .bw { display: inline-block; white-space: nowrap; }
@@ -403,7 +411,7 @@
 
   <div class="bio">
     <div class="cmdline"><span class="prompt">$</span> cat bio.txt</div>
-    <p>marcvs (marcus couto) is a visual artist and painter based in são paulo. his research investigates the machine's imagetic unconscious: he hand-paints, in digital and acrylic media, images extracted from artificial intelligence systems — inverting the usual flow between human and algorithm. his portraits reveal bodies traversed by dead technology: implants, circuits, and obsolete media embedded in flesh, in an expressionism that dialogues with hauntology and the philosophy of technology. shaped by the industrial landscape of 1980s abc paulista, he was a finalist of the ibero-american visual arts prize (cerlalc/unesco), with an exhibition in bogotá. he also operates as a cartographer of the technocracy across sound, text, and cryptoart.</p>
+    <p><span class="sel">marcvs (marcus couto) is a visual artist and painter based in são paulo. his research investigates the machine's imagetic unconscious: he hand-paints, in digital and acrylic media, images extracted from artificial intelligence systems — inverting the usual flow between human and algorithm. his portraits reveal bodies traversed by dead technology: implants, circuits, and obsolete media embedded in flesh, in an expressionism that dialogues with hauntology and the philosophy of technology. shaped by the industrial landscape of 1980s abc paulista, he was a finalist of the ibero-american visual arts prize (cerlalc/unesco), with an exhibition in bogotá. he also operates as a cartographer of the technocracy across sound, text, and cryptoart.</span></p>
   </div>
 
   <div class="cmd-row">
@@ -539,17 +547,18 @@
   // ============================================================
   (function bioDefrag() {
     const p = document.querySelector('.bio p');
-    if (!p || reduced || mobile) return;
+    const sel = p && p.querySelector('.sel');
+    if (!sel || reduced || mobile) return;
 
-    // quebra em palavras (íntegras p/ wrap) e chars
-    const words = p.textContent.split(' ');
-    p.innerHTML = words.map(w =>
+    // quebra em palavras (íntegras p/ wrap) e chars, dentro do .sel
+    const words = sel.textContent.split(' ');
+    sel.innerHTML = words.map(w =>
       '<span class="bw">' +
       [...w].map(c => '<span class="bch">' + c + '</span>').join('') +
       '</span>'
     ).join(' ');
 
-    const chars = [...p.querySelectorAll('.bch')];
+    const chars = [...sel.querySelectorAll('.bch')];
     const N = chars.length;
     // estado por partícula: centro (cache), offset atual, velocidade
     const cx = new Float32Array(N), cy = new Float32Array(N);
