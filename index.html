@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>marcvs · artist</title>
 
-<meta name="description" content="marcvs — artist. random.(image, sound, text). AI visuals, phantom videography, LuscoFilms. prompting cartographies in the technocracy. são paulo.">
-<meta property="og:title" content="marcvs · artist">
-<meta property="og:description" content="phantom videography · AI visuals · LuscoFilms · image, sound, text">
+<meta name="description" content="marcvs (Marcus Couto) — visual artist and painter, São Paulo. Portraits of the machine unconscious: hand-painting images extracted from AI systems. Cartographer of the technocracy across sound, text and cryptoart.">
+<meta property="og:title" content="marcvs · visual artist / painter">
+<meta property="og:description" content="portraits of the machine unconscious · cartographer of the technocracy — image, sound, text">
 <meta property="og:url" content="https://marcvs.art/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://marcvs.art/og.png">
@@ -167,6 +167,28 @@
     background: var(--green);
     vertical-align: -2px;
     animation: blink 1s steps(1) infinite;
+  }
+
+  /* ---- bio: cat bio.txt ------------------------------------------ */
+  .bio { margin-top: 52px; }
+  .bio .cmdline {
+    font-family: var(--plex);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--g3);
+    text-transform: lowercase;
+    margin-bottom: 12px;
+  }
+  .bio .cmdline .prompt { color: var(--green); }
+  .bio p {
+    margin: 0;
+    max-width: 66ch;
+    font-family: var(--plex);
+    font-weight: 300;
+    font-size: 13.5px;
+    letter-spacing: 0.03em;
+    line-height: 1.9;
+    color: var(--g2);
   }
 
   /* ---- command row (shuffle) ------------------------------------- */
@@ -337,7 +359,7 @@
 <noscript>
   <div style="padding:40px;font-family:monospace;color:#c9c9c2;background:#060707;min-height:100vh">
     <h1 style="color:#f4f4f0">marcvs · artist</h1>
-    <p>random.(image, sound, text) · prompting cartographies in the technocracy · são paulo</p>
+    <p>visual artist / painter · portraits of the machine unconscious · cartographer of the technocracy · são paulo</p>
     <ul>
       <li><a style="color:#33ff66" href="https://www.tiktok.com/@luscofilms">luscofilms — phantom videography</a></li>
       <li><a style="color:#33ff66" href="https://manifold.xyz/@marcvs">my drawer of dreams (manifold)</a></li>
@@ -368,9 +390,14 @@
     <div class="cmdline"><span class="prompt">$</span> whoami</div>
     <h1>marcvs</h1>
     <div class="tag">
-      <em>artist</em> · random.(image, sound, text)<br>
-      prompting cartographies in the technocracy <span class="cursor"></span>
+      <em>visual artist · painter</em><br>
+      portraits of the machine unconscious · cartographer of the technocracy <span class="cursor"></span>
     </div>
+  </div>
+
+  <div class="bio">
+    <div class="cmdline"><span class="prompt">$</span> cat bio.txt</div>
+    <p>marcvs (marcus couto) is a visual artist and painter based in são paulo. his research investigates the machine's imagetic unconscious: he hand-paints, in digital and acrylic media, images extracted from artificial intelligence systems — inverting the usual flow between human and algorithm. his portraits reveal bodies traversed by dead technology: implants, circuits, and obsolete media embedded in flesh, in an expressionism that dialogues with hauntology and the philosophy of technology. shaped by the industrial landscape of 1980s abc paulista, he was a finalist of the ibero-american visual arts prize (cerlalc/unesco), with an exhibition in bogotá. he also operates as a cartographer of the technocracy across sound, text, and cryptoart.</p>
   </div>
 
   <div class="cmd-row">
