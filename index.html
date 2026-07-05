@@ -624,7 +624,7 @@
       let x, y, ok = false, tries = 0;
       while (!ok && tries++ < 40) {
         x = Math.random() * Math.max(1, W - size);
-        y = Math.random() * (mobile ? 420 : 520);
+        y = Math.random() * (mobile ? 520 : 640);
         ok = placed.every(p =>
           Math.hypot((x + size/2) - (p.x + p.s/2), (y + size/2) - (p.y + p.s/2)) > (size + p.s) / 2 + 14);
       }
@@ -640,7 +640,7 @@
     const url = PDIR + '/' + name;
     const o = document.createElement('div');
     o.className = 'orb';
-    o._size = (mobile ? 64 : 90) + Math.random() * (mobile ? 90 : 150);
+    o._size = (mobile ? 110 : 180) + Math.random() * (mobile ? 130 : 240);
     o.style.width = o.style.height = o._size + 'px';
     o.style.backgroundImage = "url('" + url.replace(/'/g, "%27") + "')";
     o.style.setProperty('--dur', (6 + Math.random() * 7).toFixed(1) + 's');
