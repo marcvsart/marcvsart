@@ -169,41 +169,91 @@
     animation: blink 1s steps(1) infinite;
   }
 
-  /* ---- bio: cat bio.txt ------------------------------------------ */
-  .bio { margin-top: 52px; }
-  .bio .cmdline {
+  /* ---- paintings: círculos flutuantes ---------------------------- */
+  .paintings {
+    position: relative;
+    margin-top: 56px;
+    min-height: 40vh;
+  }
+  .paintings .cmdline {
     font-family: var(--plex);
     font-size: 12px;
     letter-spacing: 0.08em;
     color: var(--g3);
     text-transform: lowercase;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
   }
-  .bio .cmdline .prompt { color: var(--green); }
-  .bio p {
-    margin: 0;
-    max-width: 66ch;
+  .paintings .cmdline .prompt { color: var(--green); }
+  .pfield { position: relative; }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    cursor: crosshair;
+    border: 1px solid var(--g4);
+    filter: grayscale(0.85) contrast(1.05);
+    transition: filter .3s, border-color .3s, transform .3s;
+    animation: bob var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate;
+  }
+  .orb:hover {
+    filter: none;
+    border-color: var(--g2);
+    z-index: 5;
+  }
+  @keyframes bob {
+    from { margin-top: 0; }
+    to   { margin-top: var(--drift, -18px); }
+  }
+
+  .pfield .empty {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--g3);
+    opacity: .5;
+    animation: blink 2.6s steps(2) infinite;
+  }
+
+  /* ---- viewer fullscreen ------------------------------------------ */
+  .viewer {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(6,7,7,0.96);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 32px;
+    cursor: crosshair;
+  }
+  .viewer.on { display: flex; }
+  .viewer img {
+    max-width: 92vw;
+    max-height: 78vh;
+    border: 1px solid var(--g4);
+  }
+  .viewer .cap {
+    margin-top: 20px;
     font-family: var(--plex);
     font-weight: 300;
-    font-size: 13.5px;
-    letter-spacing: 0.03em;
-    line-height: 2.1;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--g1);
+    text-align: center;
+    max-width: 70ch;
+    text-transform: lowercase;
+  }
+  .viewer .cap::before { content: "> "; color: var(--green); }
+  .viewer .close {
+    position: absolute; top: 22px; right: 32px;
+    font-family: var(--pixel);
+    font-size: 24px;
     color: var(--g2);
+    background: none; border: none; cursor: crosshair;
   }
-  /* bloco como texto selecionado: faixas brancas por linha, texto preto */
-  .bio p .sel {
-    background: var(--white);
-    color: var(--black);
-    padding: 3px 6px;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-  /* defrag: palavras íntegras, caracteres como partículas */
-  .bio p .bw { display: inline-block; white-space: nowrap; }
-  .bio p .bch {
-    display: inline-block;
-    will-change: transform;
-  }
+  .viewer .close:hover { background: var(--white); color: var(--black); }
 
   /* ---- command row (shuffle) ------------------------------------- */
   .cmd-row {
@@ -409,13 +459,13 @@
     </div>
   </div>
 
-  <div class="bio">
-    <div class="cmdline"><span class="prompt">$</span> cat bio.txt</div>
-    <p><span class="sel">marcvs (marcus couto) is a visual artist and painter based in são paulo. his research investigates the machine's imagetic unconscious: he hand-paints, in digital and acrylic media, images extracted from artificial intelligence systems — inverting the usual flow between human and algorithm. his portraits reveal bodies traversed by dead technology: implants, circuits, and obsolete media embedded in flesh, in an expressionism that dialogues with hauntology and the philosophy of technology. shaped by the industrial landscape of 1980s abc paulista, he was a finalist of the ibero-american visual arts prize (cerlalc/unesco), with an exhibition in bogotá. he also operates as a cartographer of the technocracy across sound, text, and cryptoart.</span></p>
-  </div>
+  <section class="paintings">
+    <div class="cmdline"><span class="prompt">$</span> ls /paintings — portraits of the machine unconscious</div>
+    <div class="pfield" id="pfield"></div>
+  </section>
 
   <div class="cmd-row">
-    <span>7 strata mounted · 1 sedimenting</span>
+    <span>8 strata mounted · 1 sedimenting</span>
     <button class="cmd" type="button" id="shuffleBtn" aria-label="shuffle strata"><span class="p">$</span> shuffle --strata</button>
   </div>
 
@@ -431,6 +481,12 @@
   </footer>
 
 </div>
+</div>
+
+<div class="viewer" id="viewer" aria-modal="true" role="dialog">
+  <button class="close" aria-label="close">[x]</button>
+  <img id="viewerImg" alt="">
+  <div class="cap" id="viewerCap"></div>
 </div>
 
 <script>
@@ -496,6 +552,14 @@
       glitch: [6, 11]
     },
     {
+      label: "bio",
+      href:  "bio.html",
+      desc:  "who is marcvs — full record",
+      path:  "/strata/08 · −190m",
+      cls:   "l3",
+      glitch: [7, 13]
+    },
+    {
       label: "sedimenting",
       href:  null,
       desc:  null,
@@ -541,93 +605,95 @@
   }
 
   // ============================================================
-  // DEFRAG DA BIO — cada caractere é uma partícula: repele o
-  // ponteiro e volta por mola. mesmo princípio do defrag.js
-  // do portfólio, em modo por-caractere.
+  // PAINTINGS — lê a pasta /paintings do repo via github api.
+  // suba uma imagem nova na pasta → bola nova na home.
+  // legendas em paintings/captions.txt, formato:
+  //   nome-do-arquivo.jpg | legenda da obra
   // ============================================================
-  (function bioDefrag() {
-    const p = document.querySelector('.bio p');
-    const sel = p && p.querySelector('.sel');
-    if (!sel || reduced || mobile) return;
+  const REPO = "marcvsart/marcvsart";
+  const PDIR = "paintings";
+  const pfield = document.getElementById('pfield');
+  const orbs = [];
 
-    // quebra em palavras (íntegras p/ wrap) e chars, dentro do .sel
-    const words = sel.textContent.split(' ');
-    sel.innerHTML = words.map(w =>
-      '<span class="bw">' +
-      [...w].map(c => '<span class="bch">' + c + '</span>').join('') +
-      '</span>'
-    ).join(' ');
-
-    const chars = [...sel.querySelectorAll('.bch')];
-    const N = chars.length;
-    // estado por partícula: centro (cache), offset atual, velocidade
-    const cx = new Float32Array(N), cy = new Float32Array(N);
-    const ox = new Float32Array(N), oy = new Float32Array(N);
-    const vx = new Float32Array(N), vy = new Float32Array(N);
-
-    function cacheCenters() {
-      chars.forEach((ch, i) => {
-        const r = ch.getBoundingClientRect();
-        cx[i] = r.left + r.width / 2 + window.scrollX;
-        cy[i] = r.top + r.height / 2 + window.scrollY;
-      });
-    }
-    // transforms não afetam layout, então o cache só invalida em resize
-    cacheCenters();
-    let rzT;
-    window.addEventListener('resize', () => {
-      clearTimeout(rzT); rzT = setTimeout(cacheCenters, 200);
-    });
-    // fontes carregam depois e mudam métricas
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(cacheCenters);
-
-    const RADIUS = 110;      // alcance da repulsão
-    const FORCE  = 34;       // deslocamento máximo em px
-    const SPRING = 0.16;     // rigidez da mola de retorno
-    const DAMP   = 0.72;     // amortecimento
-
-    let mx = -9999, my = -9999, raf = null, idle = 0;
-
-    function frame() {
-      idle = 0;
-      for (let i = 0; i < N; i++) {
-        const dx = cx[i] + ox[i] - mx;
-        const dy = cy[i] + oy[i] - my;
-        const d  = Math.hypot(dx, dy);
-        let tx = 0, ty = 0;
-        if (d < RADIUS && d > 0.001) {
-          const f = (1 - d / RADIUS);
-          tx = (dx / d) * f * FORCE;
-          ty = (dy / d) * f * FORCE;
-        }
-        // mola em direção ao alvo
-        vx[i] = (vx[i] + (tx - ox[i]) * SPRING) * DAMP;
-        vy[i] = (vy[i] + (ty - oy[i]) * SPRING) * DAMP;
-        ox[i] += vx[i]; oy[i] += vy[i];
-
-        const mag = Math.abs(ox[i]) + Math.abs(oy[i]);
-        if (mag > 0.15 || Math.abs(vx[i]) + Math.abs(vy[i]) > 0.05) {
-          chars[i].style.transform =
-            'translate(' + ox[i].toFixed(1) + 'px,' + oy[i].toFixed(1) + 'px)';
-          idle++;
-        } else if (chars[i].style.transform) {
-          chars[i].style.transform = '';
-          ox[i] = oy[i] = vx[i] = vy[i] = 0;
-        }
+  function placeOrbs() {
+    // posições randômicas com tentativa de não-sobreposição
+    const W = pfield.clientWidth;
+    const placed = [];
+    orbs.forEach(o => {
+      const size = o._size;
+      let x, y, ok = false, tries = 0;
+      while (!ok && tries++ < 40) {
+        x = Math.random() * Math.max(1, W - size);
+        y = Math.random() * (mobile ? 420 : 520);
+        ok = placed.every(p =>
+          Math.hypot((x + size/2) - (p.x + p.s/2), (y + size/2) - (p.y + p.s/2)) > (size + p.s) / 2 + 14);
       }
-      raf = idle > 0 ? requestAnimationFrame(frame) : null;
-    }
-
-    document.addEventListener('mousemove', (e) => {
-      mx = e.pageX; my = e.pageY;
-      // só acorda o loop se o ponteiro está na região da bio
-      const r = p.getBoundingClientRect();
-      const near = e.clientY > r.top - RADIUS && e.clientY < r.bottom + RADIUS &&
-                   e.clientX > r.left - RADIUS && e.clientX < r.right + RADIUS;
-      if (near && !raf) raf = requestAnimationFrame(frame);
+      placed.push({ x, y, s: size });
+      o.style.left = x + 'px';
+      o.style.top  = y + 'px';
     });
-    document.addEventListener('mouseleave', () => { mx = my = -9999; });
-  })();
+    const maxY = placed.reduce((m, p) => Math.max(m, p.y + p.s), 0);
+    pfield.style.height = (maxY + 40) + 'px';
+  }
+
+  function buildOrb(name, caption) {
+    const url = PDIR + '/' + name;
+    const o = document.createElement('div');
+    o.className = 'orb';
+    o._size = (mobile ? 64 : 90) + Math.random() * (mobile ? 90 : 150);
+    o.style.width = o.style.height = o._size + 'px';
+    o.style.backgroundImage = "url('" + url.replace(/'/g, "%27") + "')";
+    o.style.setProperty('--dur', (6 + Math.random() * 7).toFixed(1) + 's');
+    o.style.setProperty('--delay', (-Math.random() * 8).toFixed(1) + 's');
+    o.style.setProperty('--drift', (-(10 + Math.random() * 16)).toFixed(0) + 'px');
+    o.setAttribute('role', 'button');
+    o.setAttribute('aria-label', caption || name);
+    o.addEventListener('click', () => openViewer(url, caption));
+    orbs.push(o);
+    pfield.appendChild(o);
+  }
+
+  async function loadPaintings() {
+    try {
+      const [dirRes, capRes] = await Promise.all([
+        fetch('https://api.github.com/repos/' + REPO + '/contents/' + PDIR),
+        fetch(PDIR + '/captions.txt').catch(() => null)
+      ]);
+      if (!dirRes.ok) throw new Error('no dir');
+      const files = (await dirRes.json())
+        .filter(f => f.type === 'file' && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name));
+
+      const caps = {};
+      if (capRes && capRes.ok) {
+        (await capRes.text()).split('\n').forEach(line => {
+          const i = line.indexOf('|');
+          if (i > 0) caps[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+        });
+      }
+      if (!files.length) throw new Error('empty');
+      files.forEach(f => buildOrb(f.name, caps[f.name] || ''));
+      placeOrbs();
+    } catch (e) {
+      pfield.innerHTML = '<div class="empty">no paintings mounted</div>';
+      pfield.style.height = 'auto';
+    }
+  }
+  loadPaintings();
+  window.addEventListener('resize', () => { if (orbs.length) placeOrbs(); });
+
+  // ---- viewer fullscreen ---------------------------------------
+  const viewer = document.getElementById('viewer');
+  const viewerImg = document.getElementById('viewerImg');
+  const viewerCap = document.getElementById('viewerCap');
+  function openViewer(url, caption) {
+    viewerImg.src = url;
+    viewerCap.textContent = caption || '';
+    viewerCap.style.display = caption ? '' : 'none';
+    viewer.classList.add('on');
+  }
+  function closeViewer() { viewer.classList.remove('on'); viewerImg.src = ''; }
+  viewer.addEventListener('click', closeViewer);
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
 
   // ---- "marcvs": desintegração por letra enquanto o mouse está em cima
   (function markDisintegrate() {
@@ -828,6 +894,7 @@
 
   // ---- shuffle --strata (FLIP) -------------------------------------
   document.getElementById('shuffleBtn').addEventListener('click', () => {
+    if (orbs.length) placeOrbs();
     const wraps = [...root.querySelectorAll('.node-wrap')];
     const firstRects = new Map();
     wraps.forEach(w => firstRects.set(w, w.getBoundingClientRect()));
