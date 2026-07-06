@@ -203,8 +203,8 @@
     z-index: 5;
   }
   @keyframes bob {
-    from { margin-top: 0; }
-    to   { margin-top: var(--drift, -18px); }
+    from { transform: translateY(0); }
+    to   { transform: translateY(var(--drift, -18px)); }
   }
 
   .pfield .empty {
@@ -288,11 +288,11 @@
   /* ---- filesystem (ex-estratos) ----------------------------------- */
   .fs {
     position: relative;
-    padding: 56px 0 10vh;
-    min-height: 58vh;
+    padding: 40px 0 8vh;
+    min-height: 0;
   }
   .node-wrap { position: relative; transition: margin-left 600ms cubic-bezier(.4,0,.2,1); }
-  .node-wrap + .node-wrap { margin-top: var(--gap, 60px); }
+  .node-wrap + .node-wrap { margin-top: var(--gap, 28px); }
 
   .node {
     position: relative;
@@ -344,15 +344,15 @@
 
   /* hierarquia em cinzas — luminância é profundidade */
   .node.prime { color: var(--white); }
-  .node.prime .label { font-size: clamp(66px, 10.5vw, 156px); }
+  .node.prime .label { font-size: clamp(34px, 4.6vw, 64px); }
   .node.prime .path { color: var(--g2); }
 
   .node.l1 { color: var(--g1); }
-  .node.l1 .label { font-size: clamp(44px, 6.5vw, 92px); }
+  .node.l1 .label { font-size: clamp(26px, 3.4vw, 44px); }
   .node.l2 { color: var(--g2); }
-  .node.l2 .label { font-size: clamp(38px, 5.6vw, 78px); }
+  .node.l2 .label { font-size: clamp(23px, 3vw, 38px); }
   .node.l3 { color: var(--g3); }
-  .node.l3 .label { font-size: clamp(34px, 5vw, 66px); }
+  .node.l3 .label { font-size: clamp(21px, 2.7vw, 33px); }
 
   /* nó sem sinal */
   .node.void { color: var(--g3); pointer-events: none; }
@@ -405,7 +405,7 @@
     .mark { margin-top: 40px; }
     .boot { padding: 24px 20px; font-size: 16px; }
     .fs { padding: 40px 0 8vh; }
-    .node-wrap + .node-wrap { margin-top: 44px; }
+    .node-wrap + .node-wrap { margin-top: 24px; }
     .node { max-width: 100%; }
     .node .desc { opacity: 1; transform: none; }
     .node .desc::before { content: "> "; color: var(--green); }
@@ -657,7 +657,7 @@
     try {
       const [dirRes, capRes] = await Promise.all([
         fetch('https://api.github.com/repos/' + REPO + '/contents/' + PDIR),
-        fetch(PDIR + '/captions.txt').catch(() => null)
+        fetch(PDIR + '/captions.txt?t=' + Date.now()).catch(() => null)
       ]);
       if (!dirRes.ok) throw new Error('no dir');
       const files = (await dirRes.json())
@@ -679,7 +679,10 @@
     }
   }
   loadPaintings();
-  window.addEventListener('resize', () => { if (orbs.length) placeOrbs(); });
+  let _lastW = window.innerWidth;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth !== _lastW && orbs.length) { _lastW = window.innerWidth; placeOrbs(); }
+  });
 
   // ---- viewer fullscreen ---------------------------------------
   const viewer = document.getElementById('viewer');
@@ -851,7 +854,7 @@
   FINAL.forEach((s, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'node-wrap';
-    wrap.style.setProperty('--gap', (48 + (i % 3) * 24) + 'px');
+    wrap.style.setProperty('--gap', (22 + (i % 3) * 10) + 'px');
     const off = i === 0 ? 0 : Math.floor(Math.random() * 50);
     wrap.style.marginLeft = (mobile ? off * 0.3 : off) + '%';
 
