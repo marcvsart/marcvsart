@@ -145,13 +145,6 @@
     cursor: crosshair;
     width: max-content; max-width: 100%;
   }
-  /* letras individuais: desintegram no hover via js */
-  .mark h1 .ch {
-    display: inline-block;
-    min-width: 0.62em;       /* trava a largura p/ glifos de corrupção */
-    text-align: center;
-    will-change: transform, opacity;
-  }
   .mark .tag {
     margin-top: 18px;
     font-family: var(--plex);
@@ -342,6 +335,7 @@
 
   /* glitch monocromático agressivo: fatias rasgando */
   .glitching .label { animation: slice 320ms steps(6, end); }
+  .glitching-h1 { animation: slice 320ms steps(6, end); }
   @keyframes slice {
     0%   { transform: none; clip-path: none; opacity: 1; }
     12%  { transform: translateX(-14px) skewX(-5deg); clip-path: inset(5% 0 68% 0); }
@@ -641,53 +635,14 @@
   viewer.addEventListener('click', closeViewer);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
 
-  // ---- "marcvs": desintegração por letra enquanto o mouse está em cima
-  (function markDisintegrate() {
+
+  // ---- "marcvs": glitch de fatias no hover (mesmo dos strata)
+  (function markGlitch() {
     const h1 = document.querySelector('.mark h1');
-    const word = h1.textContent;
-    h1.innerHTML = [...word].map(c => '<span class="ch">' + c + '</span>').join('');
-    if (reduced) return;
-    const chs = [...h1.querySelectorAll('.ch')];
-    let raf = null, leaving = false, leaveT = 0;
-
-    function frame() {
-      const settle = leaving ? Math.min(1, (performance.now() - leaveT) / 450) : 0;
-      chs.forEach((ch, i) => {
-        const p = (1 - settle) * 0.8;       // intensidade da desintegração
-        if (Math.random() < p) {
-          // letra corrompe: glifo arcano + deslocamento + fade
-          ch.textContent = rh();
-          const a = (1 - settle);
-          ch.style.transform =
-            'translate(' + ((Math.random() - .5) * 22 * a) + 'px,' +
-                           ((Math.random() - .5) * 26 * a) + 'px)' +
-            ' rotate(' + ((Math.random() - .5) * 24 * a) + 'deg)';
-          ch.style.opacity = (0.15 + Math.random() * 0.85).toFixed(2);
-          ch.style.color = Math.random() < 0.12 ? 'var(--green)'
-                         : Math.random() < 0.3  ? 'var(--g3)' : '';
-        } else {
-          ch.textContent = word[i];
-          ch.style.transform = '';
-          ch.style.opacity = '';
-          ch.style.color = '';
-        }
-      });
-      if (leaving && settle >= 1) {
-        chs.forEach((ch, i) => {
-          ch.textContent = word[i];
-          ch.style.transform = ''; ch.style.opacity = ''; ch.style.color = '';
-        });
-        raf = null; return;
-      }
-      raf = setTimeout(frame, 42);          // ~24fps, cadência de tubo
-    }
-
+    if (!h1 || reduced) return;
     h1.addEventListener('mouseenter', () => {
-      leaving = false;
-      if (!raf) frame();
-    });
-    h1.addEventListener('mouseleave', () => {
-      leaving = true; leaveT = performance.now();
+      h1.classList.remove('glitching-h1'); void h1.offsetWidth;
+      h1.classList.add('glitching-h1');
     });
   })();
 
