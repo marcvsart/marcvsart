@@ -31,7 +31,7 @@
     --g2:     #8e8e88;
     --g3:     #55554f;
     --g4:     #2c2c28;
-    --green:  #33ff66;   /* fósforo verde P1 — só o sistema usa */
+    --green:  #5ac8fa;   /* azul fantasma — só o sistema usa */
 
     --pixel: "VT323", monospace;
     --plex:  "IBM Plex Mono", ui-monospace, monospace;
@@ -395,13 +395,10 @@
     <h1 style="color:#f4f4f0">marcvs · artist</h1>
     <p>visual artist / painter · portraits of the machine unconscious · cartographer of the technocracy · são paulo</p>
     <ul>
-      <li><a style="color:#33ff66" href="https://www.tiktok.com/@luscofilms">luscofilms — phantom videography</a></li>
-      <li><a style="color:#33ff66" href="https://manifold.xyz/@marcvs">my drawer of dreams (manifold)</a></li>
-      <li><a style="color:#33ff66" href="https://www.transient.xyz/nfts/ethereum/0x80bf8004eb223ada632e4b674ac0ce4d6e464922">colors from within (transient)</a></li>
-      <li><a style="color:#33ff66" href="https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa/created">objkt: art on tezos</a></li>
-      <li><a style="color:#33ff66" href="som.html">music</a></li>
-      <li><a style="color:#33ff66" href="https://gamma.io/ordinals/collections/fragments-of-acrylic">fragments of acrylic (ordinals)</a></li>
-      <li><a style="color:#33ff66" href="https://marcvscouto.substack.com">text (substack)</a></li>
+      <li><a style="color:#5ac8fa" href="https://www.tiktok.com/@luscofilms">luscofilms — phantom videography</a></li>
+      <li><a style="color:#5ac8fa" href="cryptoart.html">cryptoart</a></li>
+      <li><a style="color:#5ac8fa" href="som.html">music</a></li>
+      <li><a style="color:#5ac8fa" href="https://marcvscouto.substack.com">text (substack)</a></li>
     </ul>
   </div>
 </noscript>
@@ -461,68 +458,44 @@
   // ============================================================
   const STRATA = [
     {
-      label: "luscofilms",
-      href:  "https://www.tiktok.com/@luscofilms",
-      desc:  "phantom videography · sfx-with-ai · sci-fi & horror that never premiered",
+      label: "bio",
+      href:  "bio.html",
+      desc:  "who is marcvs — full record",
       path:  "/strata/01 · −12m",
-      cls:   "prime",
-      glitch: [5, 10]
+      cls:   "l1",
+      glitch: [7, 13]
     },
     {
-      label: "my drawer of dreams",
-      href:  "https://manifold.xyz/@marcvs",
-      desc:  "contract on ethereum (manifold). mostly ai stuff",
+      label: "cryptoart",
+      href:  "cryptoart.html",
+      desc:  "digital paintings, films and poetry on ethereum, tezos and bitcoin",
       path:  "/strata/02 · −38m",
       cls:   "l1",
       glitch: [6, 12]
     },
     {
-      label: "colors from within",
-      href:  "https://www.transient.xyz/nfts/ethereum/0x80bf8004eb223ada632e4b674ac0ce4d6e464922",
-      desc:  "my foundation (rip) contract, now on transient. digital paintings, film and ai stuff.",
+      label: "luscofilms",
+      href:  "https://www.tiktok.com/@luscofilms",
+      desc:  "phantom videography · sfx-with-ai · sci-fi & horror that never premiered",
       path:  "/strata/03 · −67m",
-      cls:   "l2",
-      glitch: [8, 15]
-    },
-    {
-      label: "objkt: art on tezos",
-      href:  "https://objkt.com/users/tz1LxMnuPvqrYo4Z1TnVon1zrVu6VwJfuxwa/created",
-      desc:  "digital paintings, glitched photography, films and poetry",
-      path:  "/strata/04 · −94m",
-      cls:   "l1",
+      cls:   "prime",
       glitch: [5, 10]
     },
     {
       label: "music",
       href:  "som.html",
       desc:  "releases, eps and b-sides",
-      path:  "/strata/05 · −115m",
+      path:  "/strata/04 · −94m",
       cls:   "l2",
       glitch: [7, 14]
-    },
-    {
-      label: "fragments of acrylic",
-      href:  "https://gamma.io/ordinals/collections/fragments-of-acrylic",
-      desc:  "ordinal art on bitcoin · gamma",
-      path:  "/strata/06 · −141m",
-      cls:   "l3",
-      glitch: [7, 13]
     },
     {
       label: "text",
       href:  "https://marcvscouto.substack.com",
       desc:  "essays, fiction & ghost signals · substack",
-      path:  "/strata/07 · −166m",
+      path:  "/strata/05 · −115m",
       cls:   "l2",
       glitch: [6, 11]
-    },
-    {
-      label: "bio",
-      href:  "bio.html",
-      desc:  "who is marcvs — full record",
-      path:  "/strata/08 · −190m",
-      cls:   "l3",
-      glitch: [7, 13]
     },
     {
       label: "sedimenting",
@@ -809,12 +782,7 @@
 
   // ---- build do filesystem ---------------------------------------
   const root = document.getElementById('fs');
-  const rest = STRATA.slice(1);
-  for (let i = rest.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]];
-  }
-  const FINAL = [STRATA[0], ...rest];   // luscofilms sempre no topo
+  const FINAL = STRATA.slice();   // ordem fixa: cryptoart, luscofilms, music, text, bio
 
   FINAL.forEach((s, i) => {
     const wrap = document.createElement('div');
