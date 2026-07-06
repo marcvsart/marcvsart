@@ -255,36 +255,6 @@
   }
   .viewer .close:hover { background: var(--white); color: var(--black); }
 
-  /* ---- command row (shuffle) ------------------------------------- */
-  .cmd-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 18px;
-    margin-top: 72px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--g4);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--g3);
-    text-transform: lowercase;
-  }
-  .cmd {
-    background: none;
-    border: none;
-    color: var(--g1);
-    font-family: var(--pixel);
-    font-size: 21px;
-    letter-spacing: 0.06em;
-    text-transform: lowercase;
-    padding: 2px 10px;
-    cursor: crosshair;
-  }
-  .cmd .p { color: var(--green); }
-  .cmd:hover { background: var(--white); color: var(--black); }
-  .cmd:hover .p { color: var(--black); }
-
   /* ---- filesystem (ex-estratos) ----------------------------------- */
   .fs {
     position: relative;
@@ -463,11 +433,6 @@
     <div class="cmdline"><span class="prompt">$</span> ls /paintings — portraits of the machine unconscious</div>
     <div class="pfield" id="pfield"></div>
   </section>
-
-  <div class="cmd-row">
-    <span>8 strata mounted · 1 sedimenting</span>
-    <button class="cmd" type="button" id="shuffleBtn" aria-label="shuffle strata"><span class="p">$</span> shuffle --strata</button>
-  </div>
 
   <main class="fs" id="fs" aria-label="strata"></main>
 
@@ -895,47 +860,6 @@
     root.appendChild(wrap);
   });
 
-  // ---- shuffle --strata (FLIP) -------------------------------------
-  document.getElementById('shuffleBtn').addEventListener('click', () => {
-    if (orbs.length) placeOrbs();
-    const wraps = [...root.querySelectorAll('.node-wrap')];
-    const firstRects = new Map();
-    wraps.forEach(w => firstRects.set(w, w.getBoundingClientRect()));
-
-    const shuffled = wraps.slice();
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    shuffled.forEach(w => {
-      root.appendChild(w);
-      w.style.marginLeft = Math.floor(Math.random() * 50 * (mobile ? 0.3 : 1)) + '%';
-    });
-
-    requestAnimationFrame(() => {
-      shuffled.forEach((w, i) => {
-        const last = w.getBoundingClientRect();
-        const first = firstRects.get(w);
-        w.style.transition = 'none';
-        w.style.transform = 'translate(' + (first.left - last.left) + 'px,' + (first.top - last.top) + 'px)';
-        void w.offsetWidth;
-        w.style.transition = 'transform 600ms cubic-bezier(.4,0,.2,1)';
-        w.style.transform = 'translate(0,0)';
-
-        if (!reduced) {
-          const el = w.querySelector('.node');
-          setTimeout(() => {
-            el.classList.remove('glitching'); void el.offsetWidth;
-            el.classList.add('glitching');
-          }, i * 70);
-        }
-      });
-    });
-
-    setTimeout(() => {
-      shuffled.forEach(w => { w.style.transition = ''; w.style.transform = ''; });
-    }, 700);
-  });
 </script>
 </body>
 </html>
