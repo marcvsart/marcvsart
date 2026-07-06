@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Workbench:BLED,SCAN@0..100,-53..100&family=IBM+Plex+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
   /* marcvs.art v3 — MAINFRAME · /strata/02/cryptoart */
@@ -75,15 +75,15 @@
   }
   .mark .cmdline .prompt { color:var(--green); }
   .mark h1 {
-    margin:0; font-family:var(--plex); font-weight:300;
-    font-size:clamp(30px,4.2vw,46px); letter-spacing:0.34em;
+    margin:0; font-family:"Workbench",var(--pixel); font-weight:400;
+    font-size:clamp(38px,5vw,60px); letter-spacing:0.18em;
     text-transform:lowercase; color:var(--white); line-height:1;
   }
   .mark .tag {
-    margin-top:18px; font-family:var(--plex); font-size:12.5px;
+    margin-top:18px; font-family:var(--plex); font-weight:500; font-size:13px;
     letter-spacing:0.1em; color:var(--g2); line-height:2; text-transform:lowercase;
   }
-  .mark .tag em { font-style:normal; color:var(--g1); }
+  .mark .tag em { font-style:normal; color:var(--white); }
   .mark .tag .cursor {
     display:inline-block; width:9px; height:15px; background:var(--green);
     vertical-align:-2px; animation:blink 1s steps(1) infinite;
@@ -103,8 +103,8 @@
     margin-bottom:6px; text-transform:lowercase;
   }
   .node .label {
-    display:inline-block; font-family:var(--pixel);
-    line-height:0.82; letter-spacing:0.005em; text-transform:lowercase;
+    display:inline-block; font-family:"Workbench",var(--pixel);
+    line-height:0.92; letter-spacing:0.005em; text-transform:lowercase;
     position:relative; padding:2px 8px 4px 0;
   }
   .node .desc {
@@ -118,6 +118,9 @@
   .node:hover .label { background:var(--white); color:var(--black) !important; box-shadow:8px 8px 0 var(--g4); }
 
   .node.l0 { color:var(--white); }
+  .node.l0 .label { font-variation-settings:'BLED' 0,'SCAN' 0; }
+  .node.l1 .label { font-variation-settings:'BLED' 0,'SCAN' 38; }
+  .node.l2 .label { font-variation-settings:'BLED' 42,'SCAN' 0; }
   .node.l0 .label { font-size:clamp(44px,6.8vw,96px); }
   .node.l1 { color:var(--g1); }
   .node.l1 .label { font-size:clamp(38px,5.8vw,80px); }

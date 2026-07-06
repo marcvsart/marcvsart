@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Workbench:BLED,SCAN@0..100,-53..100&family=IBM+Plex+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
   /* marcvs.art v3 — MAINFRAME · /strata/08/bio */
@@ -75,15 +75,15 @@
   }
   .mark .cmdline .prompt { color:var(--green); }
   .mark h1 {
-    margin:0; font-family:var(--plex); font-weight:300;
-    font-size:clamp(30px,4.2vw,46px); letter-spacing:0.34em;
+    margin:0; font-family:"Workbench",var(--pixel); font-weight:400;
+    font-size:clamp(38px,5vw,60px); letter-spacing:0.18em;
     text-transform:lowercase; color:var(--white); line-height:1;
   }
   .mark .tag {
-    margin-top:18px; font-family:var(--plex); font-size:12.5px;
+    margin-top:18px; font-family:var(--plex); font-weight:500; font-size:13px;
     letter-spacing:0.1em; color:var(--g2); line-height:2; text-transform:lowercase;
   }
-  .mark .tag em { font-style:normal; color:var(--g1); }
+  .mark .tag em { font-style:normal; color:var(--white); }
   .mark .tag .cursor {
     display:inline-block; width:9px; height:15px; background:var(--green);
     vertical-align:-2px; animation:blink 1s steps(1) infinite;
@@ -92,8 +92,8 @@
   .bio { margin-top:64px; }
   .bio p {
     margin:0; max-width:66ch;
-    font-family:var(--plex); font-weight:300;
-    font-size:15px; letter-spacing:0.03em; line-height:2.1;
+    font-family:var(--plex); font-weight:400;
+    font-size:17px; letter-spacing:0.03em; line-height:2;
     color:var(--g1);
   }
   .bio p .bw { display:inline-block; white-space:nowrap; }
