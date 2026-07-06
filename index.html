@@ -412,6 +412,7 @@
     <div class="sys">marcvs.sys v3.0 — online<span class="blink">_</span></div>
     <div class="coords">
       são paulo · 23°32′s 46°38′w<br>
+      footage from films that never existed
     </div>
   </header>
 
@@ -626,12 +627,12 @@
   const viewerCap = document.getElementById('viewerCap');
   function openViewer(url, caption) {
     viewerImg.src = url;
-    viewerCap.textContent = caption || '';
+    viewerCap.innerHTML = caption || '';
     viewerCap.style.display = caption ? '' : 'none';
     viewer.classList.add('on');
   }
   function closeViewer() { viewer.classList.remove('on'); viewerImg.src = ''; }
-  viewer.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', (e) => { if (e.target.closest('a')) return; closeViewer(); });
   window.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
 
 
