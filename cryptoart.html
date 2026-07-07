@@ -211,11 +211,19 @@
 <script>
   const NODES = [
     {
+      label: "portraits of the basilisk",
+      href:  "https://www.transient.xyz/nfts/ethereum/0x6f2ef204ab017c648f8c4f1ec49f731827d14ff2",
+      desc:  "hand-painted portraits of the machine unconscious \u00b7 ethereum",
+      path:  "/cryptoart/00 \u00b7 ethereum",
+      cls:   "l0",
+      glitch: [5, 10]
+    },
+    {
       label: "my drawer of dreams",
       href:  "https://manifold.xyz/@marcvs",
       desc:  "contract on ethereum (manifold). mostly ai stuff",
       path:  "/cryptoart/01 · ethereum",
-      cls:   "l0",
+      cls:   "l1",
       glitch: [5, 10]
     },
     {
@@ -250,17 +258,18 @@
   document.body.classList.add('on');
 
   const root = document.getElementById('fs');
-  const list = NODES.slice();
-  for (let i = list.length - 1; i > 0; i--) {
+  const rest = NODES.slice(1);
+  for (let i = rest.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [list[i], list[j]] = [list[j], list[i]];
+    [rest[i], rest[j]] = [rest[j], rest[i]];
   }
+  const list = [NODES[0], ...rest];   // basilisk sempre no topo
 
   list.forEach((s, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'node-wrap';
     wrap.style.setProperty('--gap', (44 + (i % 3) * 20) + 'px');
-    const off = Math.floor(Math.random() * 45);
+    const off = i === 0 ? 0 : Math.floor(Math.random() * 45);
     wrap.style.marginLeft = (mobile ? off * 0.3 : off) + '%';
 
     const el = document.createElement('a');
