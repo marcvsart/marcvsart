@@ -85,3 +85,11 @@ a.film-frame:hover .film-watch { background: var(--green); color: var(--black); 
   html { scroll-behavior: auto; }
   .tape[open] .tape-panel { animation: none; }
 }
+
+/* Página de pinturas e acesso a partir da home. */
+.node.painting-entry .label { line-height: 1.15; max-width: 28ch; }
+.paintings-page .topbar a { color: var(--green); text-decoration: none; font-size: .875rem; }
+.paintings-page .topbar a:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
+.paintings-page .mark h1 { width: auto; max-width: 24ch; font-size: clamp(2rem, 4.5vw, 3.75rem); line-height: 1.15; letter-spacing: .025em; text-transform: none; }
+.paintings-page .paintings { margin-top: 32px; }
+.paintings-page .pfield { margin-top: 32px; }

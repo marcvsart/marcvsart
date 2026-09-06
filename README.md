@@ -7,7 +7,7 @@ Prompting cartographies in the technocracy.
 
 A página inicial abre com a estante de filmes: lombadas horizontais com título, data e palavras-chave. Ao clicar, tocar ou pressionar Enter/espaço, um frame grande se abre abaixo da lombada. O frame inteiro é um link para o vídeo, em uma nova aba. Uma lombada fica aberta por vez. Frames verticais e horizontais são exibidos em uma janela 16:9, com recorte ajustável por filme. O arquivo original é preservado; o enquadramento muda apenas na exibição.
 
-As pinturas continuam nas bolas, abaixo dos filmes. As demais páginas, o domínio em CNAME, a imagem social existente e o analytics foram preservados. A home e a bio passaram a incluir AI filmmaking; o canal aparece como ZOMBIEBASILISK.
+As pinturas ficam em uma página própria, **Portraits of the Basilisk [paintings]**, acessível pela home. Nela, as bolas e o visualizador foram preservados. As demais páginas, o domínio em CNAME, a imagem social existente e o analytics foram preservados. A home e a bio passaram a incluir AI filmmaking; o canal aparece como ZOMBIEBASILISK.
 
 **Primeiro filme cadastrado:** *The First Astronaut* (2026), com as palavras-chave horror, sci-fi e space exploration. Frame original fornecido por Marcus, link para o vídeo no Instagram e recorte horizontal concentrado nos olhos.
 
@@ -55,6 +55,8 @@ O catálogo local usa a mesma lógica de pasta + texto das pinturas. Ele acompan
 
 ## Atualizar as pinturas
 
+A galeria agora fica em `portraits-of-the-basilisk.html`. A home apresenta o link de acesso, sem carregar as bolas nem o visualizador de pinturas.
+
 Continue usando `paintings/` e `paintings/captions.txt`:
 
 ```text
@@ -69,8 +71,11 @@ Use o conteúdo da pasta `marcvsart-main` deste ZIP na raiz do repositório atua
 
 Arquivos alterados ou adicionados nesta revisão:
 
-- `index.html`: estante antes das pinturas, apresentação atualizada e melhorias no visualizador das bolas.
-- `bio.html`: AI filmmaking e ZOMBIEBASILISK na apresentação.
+- `index.html`: bio, estante de filmes e link para a página de pinturas.
+- `portraits-of-the-basilisk.html`: página própria das pinturas com as bolas.
+- `paintings/orbs.js`: comportamento das bolas e do visualizador.
+- `home.css`: base visual compartilhada entre a home e a página de pinturas.
+- `bio.html`: bio completa aprovada, com foco em IA, storytelling e reflexões culturais e sociais; texto estável, sem efeito de hover.
 - `shelf.css`: aparência e adaptação da estante a telas menores.
 - `basilisk-field.mjs`: fundo pixelado animado a partir de uma pintura autoral.
 - `films/shelf.mjs`: leitura do catálogo e montagem das lombadas.

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portraits of the Basilisk [paintings] · marcvs</title>
+
+<meta name="description" content="Portraits of the Basilisk — a painting series by Marcvs (Marcus Couto).">
+<meta property="og:title" content="Portraits of the Basilisk [paintings] · marcvs">
+<meta property="og:description" content="A painting series by Marcvs · image, technology and the Basilisk.">
+<meta property="og:url" content="https://marcvs.art/portraits-of-the-basilisk.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://marcvs.art/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Workbench:BLED,SCAN@0..100,-53..100&family=IBM+Plex+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="shelf.css">
+</head>
+<body class="paintings-page">
+<canvas id="basilisk-field" aria-hidden="true"></canvas>
+<div class="stage on">
+<div class="shell">
+  <header class="topbar">
+    <a class="sys" href="index.html">marcvs</a>
+    <a class="back-home" href="index.html#films">← films</a>
+  </header>
+  <div class="mark">
+    <h1>Portraits of the Basilisk</h1>
+    <div class="tag"><em>[paintings]</em></div>
+  </div>
+  <main class="paintings" id="paintings" aria-label="Portraits of the Basilisk">
+    <div class="cmdline"><span class="prompt">$</span> ls /paintings — portraits of the basilisk</div>
+    <div class="pfield" id="pfield"></div>
+  </main>
+  <noscript><p class="shelf-message">Enable JavaScript to explore the paintings, or visit <a href="cryptoart.html">cryptoart</a>.</p></noscript>
+  <footer class="foot">
+    <nav>
+      <a href="index.html">← home</a>
+      <a href="cryptoart.html">cryptoart</a>
+      <a href="https://www.instagram.com/marcvs/" target="_blank" rel="noopener">instagram</a>
+    </nav>
+    <div>marcvs · 2026</div>
+  </footer>
+</div>
+</div>
+<div class="viewer" id="viewer" aria-modal="true" role="dialog" aria-label="Painting viewer">
+  <button class="close" aria-label="close">[x]</button>
+  <img id="viewerImg" alt="">
+  <div class="cap" id="viewerCap"></div>
+</div>
+<script src="paintings/orbs.js" defer></script>
+<script type="module" src="basilisk-field.mjs"></script>
+<script data-goatcounter="https://marcvs.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

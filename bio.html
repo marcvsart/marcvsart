@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>marcvs · bio</title>
 
-<meta name="description" content="marcvs (Marcus Couto) — visual artist, AI filmmaker and art director based in São Paulo. Creator of ZOMBIEBASILISK.">
+<meta name="description" content="Marcus Couto (Marcvs) — visual artist, AI filmmaker and art director. Using AI for storytelling and exploring cultural, social and technological questions. Creator of ZOMBIEBASILISK.">
 <meta property="og:title" content="marcvs · bio">
-<meta property="og:description" content="visual artist / painter · portraits of the machine unconscious · cartographer of the technocracy">
+<meta property="og:description" content="AI filmmaking, visual arts and storytelling · cultural and social reflections on emerging technologies">
 <meta property="og:url" content="https://marcvs.art/bio.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://marcvs.art/og.png">
@@ -96,8 +96,7 @@
     font-size:17px; letter-spacing:0.03em; line-height:2;
     color:var(--g1);
   }
-  .bio p .bw { display:inline-block; white-space:nowrap; }
-  .bio p .bch { display:inline-block; will-change:transform; }
+  .bio p + p { margin-top:1.5em; }
 
   .foot {
     margin-top:96px; padding-top:18px; border-top:1px solid var(--g4);
@@ -120,7 +119,7 @@
   }
 </style>
 </head>
-<body>
+<body class="on">
 
 <div class="shell">
 
@@ -138,12 +137,16 @@
     <h1>bio</h1>
     <div class="tag">
       <em>visual artist · AI filmmaker · art director</em><br>
-      portraits of the machine unconscious · cartographer of the technocracy <span class="cursor"></span>
+      prompting cartographies in the technocracy <span class="cursor"></span>
     </div>
   </div>
 
   <div class="bio">
-    <p>marcvs (marcus couto) is a visual artist, ai filmmaker and art director based in são paulo. creator of zombiebasilisk, his horror and found-footage project connects ai filmmaking to his painting series portraits of the basilisk. he works across image, sound and text. in his painting practice, he hand-paints, in digital and acrylic media, images extracted from artificial intelligence systems — inverting the usual flow between human and algorithm. his portraits reveal bodies traversed by dead technology: implants, circuits, and obsolete media embedded in flesh, in an expressionism that dialogues with hauntology and the philosophy of technology. shaped by the industrial landscape of 1980s abc paulista, he was a finalist of the ibero-american visual arts prize (cerlalc/unesco), with an exhibition in bogotá. he also operates as a cartographer of the technocracy across sound, text, and cryptoart.</p>
+    <p>Marcus Couto (Marcvs) is a Brazilian visual artist, AI filmmaker and art director based in São Paulo. He uses artificial intelligence as a tool for storytelling and for exploring cultural and social questions, including how emerging technologies reshape our lives, beliefs and perceptions. His practice spans image, text and sound.</p>
+    <p>He is the creator of ZOMBIEBASILISK, an independent horror and sci-fi project built around creatures, impossible encounters and the language of found footage. By anchoring unfamiliar forms in recognizable situations, his films explore the uneasy boundary between what we see and what we believe.</p>
+    <p>At UOL, he works across creative and art direction, screenwriting and AI filmmaking, contributing to documentary series, narrative projects and brand films. Drawing on his background in journalism, he uses these tools to revisit historical events, bring overlooked stories into view and connect them with contemporary audiences.</p>
+    <p>His painting series, Portraits of the Basilisk, examines the cultural fantasies projected onto artificial intelligence. Developed from images produced by an obsolete generative model and painted by hand in Procreate, the works explore bodies, technological remnants and the promise of machine transcendence.</p>
+    <p>Raised in the industrial landscape of ABC Paulista, his practice draws on horror, hauntology and the philosophy of technology. He was a finalist for the Ibero-American Visual Arts Prize organized by CERLALC/UNESCO, with an exhibition in Bogotá. His collaborative electronic music project, Osasco Dynamics, has been reviewed by The Wire.</p>
   </div>
 
   <footer class="foot">
@@ -153,81 +156,7 @@
 
 </div>
 
-<script>
-  document.body.classList.add('on');
 
-  // defrag por caractere (mesmo motor da home anterior)
-  (function bioDefrag() {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mobile  = window.matchMedia('(max-width: 720px)').matches;
-    const p = document.querySelector('.bio p');
-    if (!p || reduced || mobile) return;
-
-    const words = p.textContent.split(' ');
-    p.innerHTML = words.map(w =>
-      '<span class="bw">' +
-      [...w].map(c => '<span class="bch">' + c + '</span>').join('') +
-      '</span>'
-    ).join(' ');
-
-    const chars = [...p.querySelectorAll('.bch')];
-    const N = chars.length;
-    const cx = new Float32Array(N), cy = new Float32Array(N);
-    const ox = new Float32Array(N), oy = new Float32Array(N);
-    const vx = new Float32Array(N), vy = new Float32Array(N);
-
-    function cacheCenters() {
-      chars.forEach((ch, i) => {
-        const r = ch.getBoundingClientRect();
-        cx[i] = r.left + r.width / 2 + window.scrollX;
-        cy[i] = r.top + r.height / 2 + window.scrollY;
-      });
-    }
-    cacheCenters();
-    let rzT;
-    window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(cacheCenters, 200); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(cacheCenters);
-
-    const RADIUS = 110, FORCE = 34, SPRING = 0.16, DAMP = 0.72;
-    let mx = -9999, my = -9999, raf = null, idle = 0;
-
-    function frame() {
-      idle = 0;
-      for (let i = 0; i < N; i++) {
-        const dx = cx[i] + ox[i] - mx;
-        const dy = cy[i] + oy[i] - my;
-        const d  = Math.hypot(dx, dy);
-        let tx = 0, ty = 0;
-        if (d < RADIUS && d > 0.001) {
-          const f = (1 - d / RADIUS);
-          tx = (dx / d) * f * FORCE;
-          ty = (dy / d) * f * FORCE;
-        }
-        vx[i] = (vx[i] + (tx - ox[i]) * SPRING) * DAMP;
-        vy[i] = (vy[i] + (ty - oy[i]) * SPRING) * DAMP;
-        ox[i] += vx[i]; oy[i] += vy[i];
-        const mag = Math.abs(ox[i]) + Math.abs(oy[i]);
-        if (mag > 0.15 || Math.abs(vx[i]) + Math.abs(vy[i]) > 0.05) {
-          chars[i].style.transform = 'translate(' + ox[i].toFixed(1) + 'px,' + oy[i].toFixed(1) + 'px)';
-          idle++;
-        } else if (chars[i].style.transform) {
-          chars[i].style.transform = '';
-          ox[i] = oy[i] = vx[i] = vy[i] = 0;
-        }
-      }
-      raf = idle > 0 ? requestAnimationFrame(frame) : null;
-    }
-
-    document.addEventListener('mousemove', (e) => {
-      mx = e.pageX; my = e.pageY;
-      const r = p.getBoundingClientRect();
-      const near = e.clientY > r.top - RADIUS && e.clientY < r.bottom + RADIUS &&
-                   e.clientX > r.left - RADIUS && e.clientX < r.right + RADIUS;
-      if (near && !raf) raf = requestAnimationFrame(frame);
-    });
-    document.addEventListener('mouseleave', () => { mx = my = -9999; });
-  })();
-</script>
 
 <!-- goatcounter analytics — leve, sem cookies -->
 <script data-goatcounter="https://marcvs.goatcounter.com/count"
