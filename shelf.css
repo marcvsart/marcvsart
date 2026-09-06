@@ -9,6 +9,7 @@ body { overflow-x: clip; }
 .mark h1 { font-size: clamp(40px, 5vw, 64px); }
 .mark .cmdline { display: none; }
 .mark .tag { font-size: .875rem; letter-spacing: .025em; line-height: 1.9; }
+.intro-bio { max-width: 80ch; margin: 24px 0 0; font: 400 1rem/1.75 var(--plex); color: var(--g1); }
 .film-library { position: relative; margin-top: 48px; }
 .shelf-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 18px; }
 .shelf-heading h2 { margin: 0; font: 400 1rem/1.5 var(--plex); color: var(--g1); }
