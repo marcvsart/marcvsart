@@ -11,6 +11,12 @@ As pinturas continuam nas bolas, abaixo dos filmes. As demais páginas, o domín
 
 **Primeiro filme cadastrado:** *The First Astronaut* (2026), com as palavras-chave horror, sci-fi e space exploration. Frame original fornecido por Marcus, link para o vídeo no Instagram e recorte horizontal concentrado nos olhos.
 
+## Fundo: presença pixelada
+
+A grade em perspectiva foi substituída por fragmentos da pintura `paintings/retrato-basilisco.jpeg`, ampliados e parcialmente fora da tela. Os pixels se desprendem e reaparecem em ciclos lentos, com cinzas escuros e raros pontos em azul fantasma. A imagem original permanece intacta.
+
+A região da bio recebe menos interferência. Abrir uma lombada reduz a intensidade do fundo; fechar a última restaura a intensidade suavemente. A animação respeita a preferência por movimento reduzido e pausa quando a aba está oculta. O comportamento está em `basilisk-field.mjs`, sem dependências adicionais.
+
 ## Cadastrar ou atualizar um filme pelo GitHub
 
 1. Na pasta `films`, suba o frame escolhido, preferencialmente em JPG ou WebP. Use nomes simples e mantenha a extensão correta.
@@ -66,6 +72,7 @@ Arquivos alterados ou adicionados nesta revisão:
 - `index.html`: estante antes das pinturas, apresentação atualizada e melhorias no visualizador das bolas.
 - `bio.html`: AI filmmaking e ZOMBIEBASILISK na apresentação.
 - `shelf.css`: aparência e adaptação da estante a telas menores.
+- `basilisk-field.mjs`: fundo pixelado animado a partir de uma pintura autoral.
 - `films/shelf.mjs`: leitura do catálogo e montagem das lombadas.
 - `films/captions.txt`: cadastro dos filmes, em ordem, com crop opcional.
 - `films/the-first-astronaut.png`: frame original do primeiro filme.
