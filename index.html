@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>marcvs · artist</title>
+<title>marcvs · films & visual arts</title>
 
-<meta name="description" content="marcvs (Marcus Couto) — visual artist and painter, São Paulo. Portraits of the machine unconscious: hand-painting images extracted from AI systems. Cartographer of the technocracy across sound, text and cryptoart.">
-<meta property="og:title" content="marcvs · visual artist / painter">
-<meta property="og:description" content="portraits of the machine unconscious · cartographer of the technocracy — image, sound, text">
+<meta name="description" content="marcvs (Marcus Couto) — visual artist, AI filmmaker and art director. ZOMBIEBASILISK, paintings, sound and text. São Paulo, Brazil.">
+<meta property="og:title" content="marcvs · visual artist / AI filmmaker">
+<meta property="og:description" content="AI filmmaking · visual arts · cartographies of the technocracy">
 <meta property="og:url" content="https://marcvs.art/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://marcvs.art/og.png">
@@ -386,15 +386,16 @@
     .stage { opacity: 1; }
   }
 </style>
+<link rel="stylesheet" href="shelf.css">
 </head>
 <body>
 
 <noscript>
   <div style="padding:40px;font-family:monospace;color:#c9c9c2;background:#060707;min-height:100vh">
     <h1 style="color:#f4f4f0">marcvs · artist</h1>
-    <p>visual artist / painter · portraits of the machine unconscious · cartographer of the technocracy · são paulo</p>
+    <p>visual artist / AI filmmaker / art director · são paulo</p>
     <ul>
-      <li><a style="color:#5ac8fa" href="https://www.tiktok.com/@luscofilms">luscofilms — phantom videography</a></li>
+      <li><a style="color:#5ac8fa" href="https://www.tiktok.com/@zombiebasilisk">zombiebasilisk — phantom videography</a></li>
       <li><a style="color:#5ac8fa" href="cryptoart.html">cryptoart</a></li>
       <li><a style="color:#5ac8fa" href="som.html">music</a></li>
       <li><a style="color:#5ac8fa" href="https://marcvscouto.substack.com">text (substack)</a></li>
@@ -409,7 +410,7 @@
 <div class="shell">
 
   <header class="topbar">
-    <div class="sys">marcvs.sys v3.0 — online<span class="blink">_</span></div>
+    <div class="sys">marcvs.sys v4.0 — online<span class="blink">_</span></div>
     <div class="coords">
       são paulo · 23°32′s 46°38′w<br>
     </div>
@@ -419,17 +420,28 @@
     <div class="cmdline"><span class="prompt">$</span> whoami</div>
     <h1>marcvs</h1>
     <div class="tag">
-      <em>visual artist · painter</em><br>
-      portraits of the machine unconscious · cartographer of the technocracy <span class="cursor"></span>
+      <em>visual artist · AI filmmaker · art director</em><br>
+      prompting cartographies in the technocracy <span class="cursor"></span>
     </div>
   </div>
 
-  <section class="paintings">
-    <div class="cmdline"><span class="prompt">$</span> ls /paintings — portraits of the machine unconscious</div>
+  <main class="film-library" id="films" aria-labelledby="films-title">
+    <div class="shelf-heading">
+      <h2 id="films-title">phantom videography</h2>
+      <a href="https://www.instagram.com/zombiebasilisk/" target="_blank" rel="noopener noreferrer">zombiebasilisk ↗</a>
+    </div>
+    <div class="shelf" id="film-shelf" aria-busy="true">
+      <p class="shelf-message">Loading films…</p>
+    </div>
+    <noscript><p>Watch the films on <a href="https://www.instagram.com/zombiebasilisk/">ZOMBIEBASILISK</a>.</p></noscript>
+  </main>
+
+  <section class="paintings" id="paintings" aria-label="Portraits of the Basilisk">
+    <div class="cmdline"><span class="prompt">$</span> ls /paintings — portraits of the basilisk</div>
     <div class="pfield" id="pfield"></div>
   </section>
 
-  <main class="fs" id="fs" aria-label="strata"></main>
+  <nav class="fs" id="fs" aria-label="Explore Marcvs"></nav>
 
   <footer class="foot">
     <nav>
@@ -443,12 +455,13 @@
 </div>
 </div>
 
-<div class="viewer" id="viewer" aria-modal="true" role="dialog">
+<div class="viewer" id="viewer" aria-modal="true" role="dialog" aria-label="Painting viewer">
   <button class="close" aria-label="close">[x]</button>
   <img id="viewerImg" alt="">
   <div class="cap" id="viewerCap"></div>
 </div>
 
+<script type="module" src="films/shelf.mjs"></script>
 <script>
   // ============================================================
   // STRATA como filesystem. Para adicionar um link novo, é só
@@ -472,8 +485,8 @@
       glitch: [6, 12]
     },
     {
-      label: "luscofilms",
-      href:  "https://www.tiktok.com/@luscofilms",
+      label: "zombiebasilisk",
+      href:  "https://www.tiktok.com/@zombiebasilisk",
       desc:  "phantom videography · sfx-with-ai · sci-fi & horror that never premiered",
       path:  "/strata/03 · −67m",
       cls:   "prime",
@@ -574,7 +587,8 @@
 
   function buildOrb(name, caption) {
     const url = PDIR + '/' + name;
-    const o = document.createElement('div');
+    const o = document.createElement('button');
+    o.type = 'button';
     o.className = 'orb';
     o._size = (mobile ? 110 : 180) + Math.random() * (mobile ? 130 : 240);
     o.style.width = o.style.height = o._size + 'px';
@@ -583,7 +597,7 @@
     o.style.setProperty('--delay', (-Math.random() * 8).toFixed(1) + 's');
     o.style.setProperty('--drift', (-(10 + Math.random() * 16)).toFixed(0) + 'px');
     o.setAttribute('role', 'button');
-    o.setAttribute('aria-label', caption || name);
+    o.setAttribute('aria-label', 'View painting: ' + name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '));
     o.addEventListener('click', () => openViewer(url, caption));
     orbs.push(o);
     pfield.appendChild(o);
@@ -591,26 +605,30 @@
 
   async function loadPaintings() {
     try {
-      const [dirRes, capRes] = await Promise.all([
-        fetch('https://api.github.com/repos/' + REPO + '/contents/' + PDIR),
-        fetch(PDIR + '/captions.txt?t=' + Date.now()).catch(() => null)
-      ]);
-      if (!dirRes.ok) throw new Error('no dir');
-      const files = (await dirRes.json())
-        .filter(f => f.type === 'file' && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name));
-
       const caps = {};
+      const capRes = await fetch(PDIR + '/captions.txt', { cache: 'no-cache' }).catch(() => null);
       if (capRes && capRes.ok) {
         (await capRes.text()).split('\n').forEach(line => {
           const i = line.indexOf('|');
           if (i > 0) caps[line.slice(0, i).trim()] = line.slice(i + 1).trim();
         });
       }
-      if (!files.length) throw new Error('empty');
-      files.forEach(f => buildOrb(f.name, caps[f.name] || ''));
+      // O manifesto local funciona mesmo sem acesso à API do GitHub.
+      const names = new Set(Object.keys(caps).filter(name => /\.(jpe?g|png|webp|gif|avif)$/i.test(name)));
+      try {
+        const dirRes = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + PDIR,
+          { signal: AbortSignal.timeout(3500) });
+        if (dirRes.ok) {
+          const files = await dirRes.json();
+          if (Array.isArray(files)) files.filter(f => f.type === 'file' && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name))
+            .forEach(f => names.add(f.name));
+        }
+      } catch (_) { /* As obras locais continuam disponíveis. */ }
+      if (!names.size) throw new Error('empty');
+      names.forEach(name => buildOrb(name, caps[name] || ''));
       placeOrbs();
-    } catch (e) {
-      pfield.innerHTML = '<div class="empty">no paintings mounted</div>';
+    } catch (_) {
+      pfield.innerHTML = '<p class="empty">Paintings are temporarily unavailable.</p>';
       pfield.style.height = 'auto';
     }
   }
@@ -624,15 +642,33 @@
   const viewer = document.getElementById('viewer');
   const viewerImg = document.getElementById('viewerImg');
   const viewerCap = document.getElementById('viewerCap');
+  let viewerTrigger = null;
   function openViewer(url, caption) {
+    viewerTrigger = document.activeElement;
+    document.querySelector('.stage').inert = true;
     viewerImg.src = url;
+    viewerImg.alt = url.split('/').pop().replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
     viewerCap.innerHTML = caption || '';
     viewerCap.style.display = caption ? '' : 'none';
     viewer.classList.add('on');
+    viewer.querySelector('.close').focus();
   }
-  function closeViewer() { viewer.classList.remove('on'); viewerImg.src = ''; }
+  function closeViewer() {
+    if (!viewer.classList.contains('on')) return;
+    viewer.classList.remove('on'); viewerImg.removeAttribute('src');
+    document.querySelector('.stage').inert = false;
+    viewerTrigger?.focus();
+  }
   viewer.addEventListener('click', (e) => { if (e.target.closest('a')) return; closeViewer(); });
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeViewer();
+    if (e.key === 'Tab' && viewer.classList.contains('on')) {
+      const focusable = [...viewer.querySelectorAll('button, a[href]')];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 
 
   // ---- "marcvs": glitch de fatias no hover (mesmo dos strata)
@@ -645,47 +681,9 @@
     });
   })();
 
-  // ---- boot: terminal digitando -------------------------------
-  const BOOTLINES = [
-    "marcvs.sys v3.0",
-    "loading reference list .............. ok",
-    "exorcising hauntings from the drive . ok",
-    "",
-    "$ run marcvs.art_"
-  ];
-  const boot  = document.getElementById('boot');
-  const stage = document.getElementById('stage');
-
-  function enterStage() {
-    boot.classList.add('done');
-    stage.classList.add('on');
-    setTimeout(() => boot.remove(), 300);
-  }
-
-  if (reduced) {
-    boot.remove(); stage.classList.add('on');
-  } else {
-    let li = 0, ci = 0, out = "";
-    (function type() {
-      if (li >= BOOTLINES.length) { setTimeout(enterStage, 260); return; }
-      const line = BOOTLINES[li];
-      if (ci < line.length) {
-        // blocos de 2-3 chars: rápido, como saída de sistema
-        const step = 2 + Math.floor(Math.random() * 2);
-        out += line.slice(ci, ci + step);
-        ci += step;
-        boot.textContent = out;
-        setTimeout(type, 12 + Math.random() * 18);
-      } else {
-        out += "\n"; li++; ci = 0;
-        boot.textContent = out;
-        setTimeout(type, line === "" ? 60 : 110);
-      }
-    })();
-    // pula o boot com clique ou tecla
-    boot.addEventListener('click', enterStage);
-    window.addEventListener('keydown', enterStage, { once: true });
-  }
+  // A estante fica disponível imediatamente, sem uma tela de carregamento.
+  document.getElementById('boot')?.remove();
+  document.getElementById('stage').classList.add('on');
 
   // ---- wireframe floor: grid em perspectiva, early CG ----------
   const wire = document.getElementById('wire');
@@ -740,7 +738,7 @@
 
   // ---- build do filesystem ---------------------------------------
   const root = document.getElementById('fs');
-  const FINAL = STRATA.slice();   // ordem fixa: cryptoart, luscofilms, music, text, bio
+  const FINAL = STRATA.slice();   // ordem fixa: cryptoart, zombiebasilisk, music, text, bio
 
   FINAL.forEach((s, i) => {
     const wrap = document.createElement('div');
