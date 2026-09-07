@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>marcvs · films & visual arts</title>
 
-<meta name="description" content="marcvs (Marcus Couto) — visual artist, AI filmmaker and art director. ZOMBIEBASILISK, paintings, sound and text. São Paulo, Brazil.">
+<meta name="description" content="marcvs (Marcus Couto) — visual artist, AI filmmaker and art director. ZOMBIEBASILISK, paintings, text and sound. São Paulo, Brazil.">
 <meta property="og:title" content="marcvs · visual artist / AI filmmaker">
 <meta property="og:description" content="AI filmmaking · visual arts · cartographies of the technocracy">
 <meta property="og:url" content="https://marcvs.art/">
@@ -28,10 +28,9 @@
     <p>visual artist / AI filmmaker / art director · são paulo</p>
     <ul>
       <li><a style="color:#5ac8fa" href="https://www.tiktok.com/@zombiebasilisk">zombiebasilisk — phantom videography</a></li>
-      <li><a style="color:#5ac8fa" href="portraits-of-the-basilisk.html">Portraits of the Basilisk [paintings]</a></li>
-      <li><a style="color:#5ac8fa" href="cryptoart.html">cryptoart</a></li>
-      <li><a style="color:#5ac8fa" href="som.html">music</a></li>
-      <li><a style="color:#5ac8fa" href="https://marcvscouto.substack.com">text (substack)</a></li>
+      <li><a style="color:#5ac8fa" href="portraits-of-the-basilisk.html">Portraits of the Basilisk [paintings &amp; cryptoart]</a></li>
+      <li><a style="color:#5ac8fa" href="som.html">Sound [music &amp; releases]</a></li>
+      <li><a style="color:#5ac8fa" href="https://marcvscouto.substack.com">Writing [essays &amp; fiction] · in Portuguese</a></li>
     </ul>
   </div>
 </noscript>
@@ -56,7 +55,7 @@
       <em>visual artist · AI filmmaker · art director</em><br>
       prompting cartographies in the technocracy <span class="cursor"></span>
     </div>
-    <p class="intro-bio">I'm Marcus Couto (Marcvs), a visual artist, AI filmmaker and art director based in São Paulo. I create films and images where the familiar turns strange. Through ZOMBIEBASILISK, my independent horror and sci-fi project, I explore creatures, impossible encounters and the language of found footage. I also work at UOL, bringing together art direction, screenwriting and AI filmmaking across documentary and narrative projects.</p>
+    <p class="intro-bio">I'm Marcus Couto (Marcvs), a visual artist, AI filmmaker and art director based in São Paulo. I create films and images where the familiar turns strange. Through ZOMBIEBASILISK, my independent horror and sci-fi project, I explore creatures, impossible encounters and the language of found footage. I also work at UOL, bringing together art direction, screenwriting and AI filmmaking across documentary and narrative projects. <a class="bio-link" href="bio.html">[read full bio]</a></p>
   </div>
 
   <main class="film-library" id="films" aria-labelledby="films-title">
@@ -74,11 +73,11 @@
 
   <nav class="fs" id="fs" aria-label="Explore Marcvs"></nav>
 
+  <div class="collaborations"><a href="https://marcuscouto.com" target="_blank" rel="noopener noreferrer">Art direction &amp; collaborations ↗</a></div>
+
   <footer class="foot">
     <nav>
       <a href="https://www.instagram.com/marcvs/" target="_blank" rel="noopener">instagram</a>
-      <a href="https://marcvscouto.substack.com" target="_blank" rel="noopener">substack</a>
-      <a href="https://marcuscouto.com" target="_blank" rel="noopener">art direction</a>
     </nav>
     <div>23°32′s 46°38′w · marcvs · 2026</div>
   </footer>
@@ -97,59 +96,27 @@
   // ============================================================
   const STRATA = [
     {
-      label: "Portraits of the Basilisk [paintings]",
+      label: "Portraits of the Basilisk [paintings & cryptoart]",
       href: "portraits-of-the-basilisk.html",
-      desc: "digital paintings by marcvs",
-      path: "/paintings",
+      desc: "paintings, machine imaginaries and works on blockchain",
+      path: "/image · −12m",
       cls: "l1 painting-entry",
       glitch: [9, 18]
     },
     {
-      label: "bio",
-      href:  "bio.html",
-      desc:  "who is marcvs — full record",
-      path:  "/strata/01 · −12m",
-      cls:   "l1",
-      glitch: [7, 13]
+      label: "Writing [essays & fiction]",
+      href: "https://marcvscouto.substack.com",
+      desc: "culture, technology and creative practice · substack · in Portuguese",
+      path: "/text · −38m",
+      cls: "l1",
+      glitch: [9, 18]
     },
     {
-      label: "cryptoart",
-      href:  "cryptoart.html",
-      desc:  "digital paintings, films and poetry on ethereum, tezos and bitcoin",
-      path:  "/strata/02 · −38m",
-      cls:   "l1",
-      glitch: [6, 12]
-    },
-    {
-      label: "zombiebasilisk",
-      href:  "https://www.tiktok.com/@zombiebasilisk",
-      desc:  "phantom videography · sfx-with-ai · sci-fi & horror that never premiered",
-      path:  "/strata/03 · −67m",
-      cls:   "prime",
-      glitch: [5, 10]
-    },
-    {
-      label: "music",
-      href:  "som.html",
-      desc:  "releases, eps and b-sides",
-      path:  "/strata/04 · −94m",
-      cls:   "l2",
-      glitch: [7, 14]
-    },
-    {
-      label: "text",
-      href:  "https://marcvscouto.substack.com",
-      desc:  "essays, fiction & ghost signals · substack",
-      path:  "/strata/05 · −115m",
-      cls:   "l2",
-      glitch: [6, 11]
-    },
-    {
-      label: "sedimenting",
-      href:  null,
-      desc:  null,
-      path:  "/strata/?? · −???m",
-      cls:   "void",
+      label: "Sound [music & releases]",
+      href: "som.html",
+      desc: "electro, house and techno · solo releases and collaborations",
+      path: "/sound · −67m",
+      cls: "l1",
       glitch: [9, 18]
     }
   ];
@@ -205,14 +172,12 @@
 
   // ---- build do filesystem ---------------------------------------
   const root = document.getElementById('fs');
-  const FINAL = STRATA.slice();   // ordem fixa: cryptoart, zombiebasilisk, music, text, bio
+  const FINAL = STRATA; // ordem fixa: image, text, sound
 
   FINAL.forEach((s, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'node-wrap';
     wrap.style.setProperty('--gap', (22 + (i % 3) * 10) + 'px');
-    const off = i === 0 ? 0 : Math.floor(Math.random() * 50);
-    wrap.style.marginLeft = (mobile ? off * 0.3 : off) + '%';
 
     const tag = s.href ? 'a' : 'div';
     const el = document.createElement(tag);
