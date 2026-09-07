@@ -1,5 +1,5 @@
 (() => {
-  const mobile = window.matchMedia('(max-width: 720px)').matches;
+  const mobileQuery = window.matchMedia('(max-width: 720px)');
   // ============================================================
   // PAINTINGS — lê a pasta /paintings do repo via github api.
   // suba uma imagem nova na pasta → bola nova na página de pinturas.
@@ -12,23 +12,52 @@
   const orbs = [];
 
   function placeOrbs() {
-    // posições randômicas com tentativa de não-sobreposição
     const W = pfield.clientWidth;
+    if (!W) return;
+    const mobile = mobileQuery.matches;
+    // Reserva 26px para a flutuação e 14px entre as bordas das pinturas.
+    const drift = 26;
+    const clearance = drift + 14;
     const placed = [];
-    orbs.forEach(o => {
-      const size = o._size;
-      let x, y, ok = false, tries = 0;
-      while (!ok && tries++ < 40) {
-        x = Math.random() * Math.max(1, W - size);
-        y = Math.random() * (mobile ? 520 : 640);
-        ok = placed.every(p =>
-          Math.hypot((x + size/2) - (p.x + p.s/2), (y + size/2) - (p.y + p.s/2)) > (size + p.s) / 2 + 14);
+    orbs.forEach((o, index) => {
+      const size = Math.min(W, mobile
+        ? Math.min(260, W * (0.55 + o._scale * 0.2))
+        : 180 + o._scale * 240);
+      o._size = size;
+      o.style.width = o.style.height = size + 'px';
+      let x, y;
+      if (mobile) {
+        // Composição alternada: cada obra encontra espaço abaixo das anteriores.
+        // A altura cresce com o catálogo, sem limite fixo nem colisões ao sortear.
+        x = index % 2 ? W - size : 0;
+        y = drift;
+        placed.forEach(p => {
+          const dx = (x + size / 2) - (p.x + p.s / 2);
+          const distance = (size + p.s) / 2 + clearance;
+          if (Math.abs(dx) < distance) {
+            const below = p.y + p.s / 2 + Math.sqrt(distance ** 2 - dx ** 2) - size / 2;
+            y = Math.max(y, below);
+          }
+        });
+      } else {
+        let fits = false;
+        for (let tries = 0; tries < 40; tries++) {
+          x = Math.random() * (W - size);
+          y = drift + Math.random() * 640;
+          fits = placed.every(p => Math.hypot(
+            x + size / 2 - p.x - p.s / 2,
+            y + size / 2 - p.y - p.s / 2
+          ) >= (size + p.s) / 2 + clearance);
+          if (fits) break;
+        }
+        // Nunca aceita uma posição sobreposta ao esgotar as tentativas.
+        if (!fits) y = placed.reduce((max, p) => Math.max(max, p.y + p.s), 0) + clearance;
       }
       placed.push({ x, y, s: size });
       o.style.left = x + 'px';
-      o.style.top  = y + 'px';
+      o.style.top = y + 'px';
     });
-    const maxY = placed.reduce((m, p) => Math.max(m, p.y + p.s), 0);
+    const maxY = placed.reduce((max, p) => Math.max(max, p.y + p.s), 0);
     pfield.style.height = (maxY + 40) + 'px';
   }
 
@@ -37,8 +66,7 @@
     const o = document.createElement('button');
     o.type = 'button';
     o.className = 'orb';
-    o._size = (mobile ? 110 : 180) + Math.random() * (mobile ? 130 : 240);
-    o.style.width = o.style.height = o._size + 'px';
+    o._scale = Math.random();
     o.style.backgroundImage = "url('" + url.replace(/'/g, "%27") + "')";
     o.style.setProperty('--dur', (6 + Math.random() * 7).toFixed(1) + 's');
     o.style.setProperty('--delay', (-Math.random() * 8).toFixed(1) + 's');
