@@ -21,8 +21,8 @@ export function parseFilms(source) {
   source.replace(/^\uFEFF/, '').split(/\r?\n/).forEach((line, index) => {
     if (!line.trim() || line.trimStart().startsWith('#')) return;
     const fields = line.split('|').map(value => value.trim());
-    const [file, title, date, keywords, url, cropValue, description = '', linkLabel = ''] = fields;
-    if (fields.length < 5 || fields.length > 8 || !file || !title || /[\\/]/.test(file) ||
+    const [file, title, date, keywords, url, cropValue, description = '', linkLabel = '', kind = '', credits = ''] = fields;
+    if (fields.length < 5 || fields.length > 10 || !file || !title || /[\\/]/.test(file) ||
         !/\.(png|jpe?g|webp|gif|avif)$/i.test(file) || seen.has(file)) {
       warnings.push(`Linha ${index + 1}: registro inválido ou arquivo repetido.`);
       return;
@@ -32,7 +32,7 @@ export function parseFilms(source) {
     if (!href) warnings.push(`Linha ${index + 1}: URL ausente ou inválida.`);
     const crop = parseCrop(cropValue);
     if (!crop) warnings.push(`Linha ${index + 1}: recorte inválido; usando o centro.`);
-    records.push({ file, title, date, tags: keywords.split(',').map(tag => tag.trim()).filter(Boolean), href, crop: crop || '50% 50%', description, linkLabel });
+    records.push({ file, title, date, tags: keywords.split(',').map(tag => tag.trim()).filter(Boolean), href, crop: crop || '50% 50%', description, linkLabel, kind, credits });
   });
   return { records, warnings };
 }
@@ -65,15 +65,19 @@ export function renderFilms(root, records) {
     const number = element('span', 'tape-number', String(index + 1).padStart(2, '0'));
     number.setAttribute('aria-hidden', 'true');
     const title = element('span', 'tape-title', film.title);
+    const identity = element('span', 'tape-identity');
+    identity.append(title);
+    if (film.kind) identity.append(element('span', 'tape-kind', `[${film.kind}]`));
     const date = element('span', 'tape-date', film.date || '—');
     const tags = element('span', 'tape-tags');
     film.tags.forEach(tag => tags.append(element('span', '', tag)));
     const toggle = element('span', 'tape-toggle');
     toggle.setAttribute('aria-hidden', 'true');
-    summary.append(number, title, date, tags, toggle);
+    summary.append(number, identity, date, tags, toggle);
 
     const panel = element('div', 'tape-panel');
     if (film.description) panel.append(element('p', 'film-description', film.description));
+    if (film.credits) panel.append(element('p', 'film-credits', film.credits));
     const frame = element(film.href ? 'a' : 'div', 'film-frame');
     if (film.href) {
       frame.href = film.href;
@@ -117,7 +121,7 @@ export async function loadFilms(root) {
     warnings.forEach(message => console.warn('[films]', message));
     renderFilms(root, records);
   } catch {
-    root.replaceChildren(element('p', 'shelf-message', 'The film selection is temporarily unavailable. Visit ZOMBIEBASILISK using the link above.'));
+    renderFilms(root, []);
   } finally {
     root.setAttribute('aria-busy', 'false');
   }
