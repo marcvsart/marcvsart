@@ -21,8 +21,8 @@ export function parseFilms(source) {
   source.replace(/^\uFEFF/, '').split(/\r?\n/).forEach((line, index) => {
     if (!line.trim() || line.trimStart().startsWith('#')) return;
     const fields = line.split('|').map(value => value.trim());
-    const [file, title, date, keywords, url, cropValue] = fields;
-    if (![5, 6].includes(fields.length) || !file || !title || /[\\/]/.test(file) ||
+    const [file, title, date, keywords, url, cropValue, description = '', linkLabel = ''] = fields;
+    if (fields.length < 5 || fields.length > 8 || !file || !title || /[\\/]/.test(file) ||
         !/\.(png|jpe?g|webp|gif|avif)$/i.test(file) || seen.has(file)) {
       warnings.push(`Linha ${index + 1}: registro inválido ou arquivo repetido.`);
       return;
@@ -32,7 +32,7 @@ export function parseFilms(source) {
     if (!href) warnings.push(`Linha ${index + 1}: URL ausente ou inválida.`);
     const crop = parseCrop(cropValue);
     if (!crop) warnings.push(`Linha ${index + 1}: recorte inválido; usando o centro.`);
-    records.push({ file, title, date, tags: keywords.split(',').map(tag => tag.trim()).filter(Boolean), href, crop: crop || '50% 50%' });
+    records.push({ file, title, date, tags: keywords.split(',').map(tag => tag.trim()).filter(Boolean), href, crop: crop || '50% 50%', description, linkLabel });
   });
   return { records, warnings };
 }
@@ -73,12 +73,13 @@ export function renderFilms(root, records) {
     summary.append(number, title, date, tags, toggle);
 
     const panel = element('div', 'tape-panel');
+    if (film.description) panel.append(element('p', 'film-description', film.description));
     const frame = element(film.href ? 'a' : 'div', 'film-frame');
     if (film.href) {
       frame.href = film.href;
       frame.target = '_blank';
       frame.rel = 'noopener noreferrer';
-      frame.setAttribute('aria-label', `Watch ${film.title} (opens in a new tab)`);
+      frame.setAttribute('aria-label', `${film.linkLabel || 'Watch film'} — ${film.title} (opens in a new tab)`);
     }
     const image = element('img');
     image.alt = `Frame — ${film.title}`;
@@ -90,7 +91,7 @@ export function renderFilms(root, records) {
       frame.classList.add('image-unavailable');
     });
     const watch = element('span', 'film-watch');
-    watch.append(element('span', '', film.href ? 'Watch film' : 'Video link unavailable'));
+    watch.append(element('span', '', film.href ? (film.linkLabel || 'Watch film') : 'Video link unavailable'));
     if (film.href) watch.append(element('span', '', '↗'));
     frame.append(image, watch);
     panel.append(frame);
