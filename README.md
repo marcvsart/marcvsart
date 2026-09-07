@@ -109,3 +109,15 @@ Nenhuma alteração foi enviada ao GitHub ou ao domínio público nesta revisão
 - `og.png`: imagem social original.
 
 [Site](https://marcvs.art) · [Substack](https://marcvscouto.substack.com) · [Portfólio profissional](https://marcuscouto.com)
+
+## Atualização de posicionamento e créditos
+
+O título da home e de compartilhamento é **Marcvs (Marcus Couto) — AI Filmmaker & Art Director**. A bio inclui links para ZOMBIEBASILISK, Portraits, o portfólio profissional e a seção Osasco Dynamics de Sound. O contato da home e da bio leva ao Instagram de Marcvs.
+
+No catálogo de filmes, os campos 9 e 10 são opcionais:
+
+```text
+arquivo | título | data | tags | URL | crop | descrição | texto do link | tipo | créditos
+```
+
+O tipo aparece abaixo do título da lombada, como `[ongoing project]` ou `[short film]`. Os créditos aparecem ao abrir, depois da sinopse e antes do thumb. Preencha somente as funções confirmadas para cada obra. Campos vazios não aparecem; linhas antigas de 5 a 8 campos continuam funcionando. Se quiser usar créditos sem tipo, mantenha o campo 9 vazio. As descrições publicadas pelo artista foram preservadas nesta atualização.
