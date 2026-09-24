@@ -92,8 +92,8 @@ Arquivos alterados ou adicionados nesta revisão:
 - `basilisk-field.mjs`: fundo pixelado animado a partir de uma pintura autoral.
 - `films/shelf.mjs`: leitura do catálogo e montagem das lombadas.
 - `films/captions.txt`: cadastro em ordem com crop, descrição e texto do link opcionais.
-- `films/zombiebasilisk.png`: frame original do projeto, com crop definido no catálogo.
-- `films/the-first-astronaut.png`: frame original do primeiro filme.
+- `films/zombiebasilisk.jpg`: frame original do projeto, com crop definido no catálogo.
+- `films/the-first-astronaut.jpg`: frame original do primeiro filme.
 - `README.md`: estas instruções.
 
 Nenhuma alteração foi enviada ao GitHub ou ao domínio público nesta revisão. O projeto continua estático, sem instalação de dependências ou etapa de build. Para uma conferência local, sirva a pasta por HTTP; a leitura do catálogo não funciona abrindo o HTML diretamente por `file://`.
