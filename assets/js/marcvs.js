@@ -6,7 +6,7 @@
 
   // Páginas equivalentes nas duas línguas (botão EN | PT).
   var PAIRS = [['/', '/pt/'], ['/paintings/', '/pt/pinturas/'], ['/sound/', '/pt/som/']];
-  var ANCHORS = [['films', 'filmes'], ['texts', 'textos'], ['collections', 'colecoes'], ['sound', 'som'], ['paintings', 'pinturas']];
+  var ANCHORS = [['films', 'filmes'], ['texts', 'textos'], ['collections', 'colecoes'], ['sound', 'som'], ['paintings', 'pinturas'], ['cryptoart', 'criptoarte']];
 
   var NAV = PT ? [
     { href: '/pt/#filmes', label: 'Filmes', match: /^\/pt\/$/, hash: 'filmes' },
