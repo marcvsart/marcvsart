@@ -107,3 +107,12 @@
   .orbs img { width: 120px; height: 120px; }
   .orbs a:nth-child(2) img { width: 160px; height: 160px; }
 }
+
+/* Criptoarte na home (as regras de .collection-* vêm de arte.css, que a home não carrega) */
+.sec-lead { max-width: 62ch; margin: 0 0 var(--space-3); color: var(--ink-2); }
+.collection-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-4); margin-top: var(--space-2); }
+.collection-link { display: block; padding: var(--space-3) 0; border-top: 1px solid var(--rule); color: var(--ink-2); text-decoration: none; }
+.collection-chain { color: var(--ink-soft); font-size: var(--fs-s); }
+.collection-link h4 { margin: 8px 0 0; color: var(--accent); font: 400 clamp(1.25rem, 2.4vw, 1.6rem)/1.3 var(--font-title); }
+.collection-link:hover h4 { text-decoration: underline; text-underline-offset: 5px; }
+@media (max-width: 640px) { .collection-list { grid-template-columns: 1fr; } }
